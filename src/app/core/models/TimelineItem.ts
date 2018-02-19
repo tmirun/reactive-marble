@@ -1,4 +1,5 @@
 import {Timeline} from './Timeline';
+import {Payload} from './Payload';
 
 export class TimelineItem {
   public group: any;
@@ -13,11 +14,11 @@ export class TimelineItem {
 
   private _range: number;
 
-  constructor (timeLine: Timeline, params) {
-    const defaultParams = {
+  constructor (timeLine: Timeline, params?: Payload) {
+    const defaultParams: Payload = {
       range: 10,
       value: null,
-      fillColor: 'blue'
+      color: 'blue'
     };
     params = Object.assign(defaultParams, params);
 
@@ -28,7 +29,7 @@ export class TimelineItem {
     this.group = this.draw.group();
 
     this.circle = this.draw.circle(this.circleSize);
-    this.circle.fill(params.fillColor);
+    this.circle.fill(params.color);
     this.circle.stroke({ width: 1 });
 
     this.text = this.draw.text(`${params.value}`);
