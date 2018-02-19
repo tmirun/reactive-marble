@@ -43,6 +43,10 @@ export class TimelineItem {
       this.range = Math.round(x / this.timeline._rangeMetric);
       return {x: false, y: false};
     });
+    this.group.style('cursor', 'ew-resize');
+    this.group.mousedown(() => {
+      this.group.front();
+    });
 
     this.range = params.range;
   }
