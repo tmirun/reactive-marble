@@ -51,9 +51,8 @@ export class TimelineItem {
     if (range === this._range || range < 0 || range > 100) { return; }
     this._range = range;
     this.group.cx(this.timeline.init.x + this._range * this.timeline._rangeMetric);
-
     if (this.onChange) {
-      this.onChange(Range);
+      this.onChange(this._range);
     }
   }
 }
