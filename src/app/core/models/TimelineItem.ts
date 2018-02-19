@@ -28,7 +28,7 @@ export class TimelineItem {
     this.group = this.draw.group();
 
     this.circle = this.draw.circle(this.circleSize);
-    this.circle.fill('transparent');
+    this.circle.fill(params.fillColor);
     this.circle.stroke({ width: 1 });
 
     this.text = this.draw.text(`${params.value}`);
