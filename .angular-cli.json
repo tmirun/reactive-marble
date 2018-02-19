@@ -21,7 +21,10 @@
       "styles": [
         "styles.scss"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/svg.js/dist/svg.min.js",
+        "../node_modules/svg.draggable.js/dist/svg.draggable.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
