@@ -4,11 +4,12 @@ export class TimelineItem {
   public group: any;
   public cx: number;
   public cy: number;
+  public circleSize: number = 30;
   public timeline: Timeline;
   public draw;
   public circle;
   public text;
-  public circleSize: number = 30;
+  public onChange: Function; // callback
 
   private _range: number;
 
@@ -27,7 +28,7 @@ export class TimelineItem {
     this.group = this.draw.group();
 
     this.circle = this.draw.circle(this.circleSize);
-    this.circle.fill(params.fillColor);
+    this.circle.fill('transparent');
     this.circle.stroke({ width: 1 });
 
     this.text = this.draw.text(`${params.value}`);
@@ -39,17 +40,18 @@ export class TimelineItem {
     this.group.cx(this.timeline.init.x);
     this.group.cy(this.timeline.center.y);
     this.group.draggable((x, y) => {
-      return {  x: x > this.timeline.init.x - this.circleSize / 2 && x < this.timeline.end.x - this.circleSize / 2,
-                y: y === this.timeline.center.y - this.circleSize / 2 };
+      this.range = Math.round(x / this.timeline._rangeMetric);
+      return {x: false, y: false};
     });
   }
 
-  move (range) {
-
-  }
-
   set range (range: number) {
+    if (range === this._range || range < 0 || range > 100) { return; }
     this._range = range;
-  }
+    this.group.cx(this.timeline.init.x + this._range * this.timeline._rangeMetric);
 
+    if (this.onChange) {
+      this.onChange(Range);
+    }
+  }
 }
