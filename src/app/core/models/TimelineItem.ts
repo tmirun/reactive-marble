@@ -37,12 +37,13 @@ export class TimelineItem {
     this.group.add(this.circle);
     this.group.add(this.text);
 
-    this.group.cx(this.timeline.init.x);
     this.group.cy(this.timeline.center.y);
     this.group.draggable((x, y) => {
       this.range = Math.round(x / this.timeline._rangeMetric);
       return {x: false, y: false};
     });
+
+    this.range = params.range;
   }
 
   set range (range: number) {
