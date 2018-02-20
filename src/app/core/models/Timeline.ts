@@ -1,37 +1,58 @@
 import { Point } from './Point';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/from';
 import { TimelineItem } from './TimelineItem';
+import { Payload } from './Payload';
+import { TimelineLimitLine } from './TimelineLimitLine';
 
 declare const SVG: any;
 
 export class Timeline {
   public svgSize = { width: 400, height: 200 };
+  public margin = 20;
   public padding = 20;
-  public center: Point = new Point(this.svgSize.width / 2, this.svgSize.height / 2);
-  public init:   Point = new Point(this.padding, this.center.y);
-  public end:    Point = new Point(this.svgSize.width - this.padding, this.center.y);
-  public completeRange = { min: this.init.x, max: this.end.y};
+  public center:  Point = new Point(this.svgSize.width / 2, this.svgSize.height / 2);
+  public initPos:    Point = new Point(this.margin, this.center.y);
+  public endPos:     Point = new Point(this.svgSize.width - this.margin - this.padding, this.center.y);
+  public endLinePos: Point = new Point(this.svgSize.width - this.margin, this.center.y);
+  public _rangeMetric = (this.endPos.x - this.initPos.x) / 100;
+  public range = {min: 0, max: 100};
+
   public draw;
   public items: TimelineItem[] = [] as TimelineItem[];
-  public _rangeMetric = (this.end.x - this.init.x) / 100;
+  public endLine: TimelineLimitLine;
+  public input$: Observable<any>;
+  public inputSubscription: Subscription;
 
-  public observable: Observable<any> = Observable.from(
-    [ {t: 10, v: 1},
-      {t: 20, v: 2},
-      {t: 30, v: 3},
-      {t: 40, v: 4},
-      {t: 50, v: 5},
-      {t: 60, v: 6},
-      {t: 0, v: 7}]);
-
-  constructor (id: string, observable?: Observable<any>) {
+  constructor (id: string, input: Observable<any>) {
     this.draw = SVG(id).size(this.svgSize.width, this.svgSize.height);
-    this.draw.line(this.init.x, this.init.y, this.end.x, this.end.y).stroke({ width: 1 });
 
-    [ {t: 10, v: 1}].forEach( (item) => {
-      this.items.push(new TimelineItem(this, {range: item.t, value: item.v}));
+    // Draw timeline
+    // ---------->
+    this.draw.line(this.initPos.x, this.initPos.y, this.endLinePos.x, this.endLinePos.y).stroke({ width: 1 });
+    this.draw.polygon('0,0 0,12 12,6')
+      .fill('black')
+      .cx(this.endLinePos.x + 6)
+      .cy(this.center.y);
+
+    // Draw Timeline endPos
+    // -------|->
+    this.endLine = new TimelineLimitLine(this, 100);
+    this.endLine.change$.subscribe((range) => {
+      console.log(range);
+      this.range.max = range;
+      this.items.forEach((timelineItem: TimelineItem) => {
+        timelineItem.refreshRangePosition();
+      });
     });
 
+    this.input$ = input;
+
+    this.inputSubscription = input.subscribe((item: Payload) => {
+      this.items.push(new TimelineItem(this, {range: item.range, value: item.value}));
+    });
   }
+
+
 }
