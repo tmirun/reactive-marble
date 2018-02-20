@@ -1,5 +1,6 @@
 import {Timeline} from './Timeline';
 import {Payload} from './Payload';
+import {Subject} from 'rxjs/Subject';
 
 export class TimelineItem {
   public group: any;
@@ -10,7 +11,7 @@ export class TimelineItem {
   public draw;
   public circle;
   public text;
-  public onChange: Function; // callback
+  public change$: Subject<Number> = new Subject<number>();
 
   private _range: number;
 
@@ -24,7 +25,7 @@ export class TimelineItem {
 
     this.timeline = timeLine;
     this.cy = this.timeline.center.y;
-    this.cx = this.timeline.init.x;
+    this.cx = this.timeline.initPos.x;
     this.draw = this.timeline.draw;
     this.group = this.draw.group();
 
@@ -54,9 +55,7 @@ export class TimelineItem {
   set range (range: number) {
     if (range === this._range || range < 0 || range > 100) { return; }
     this._range = range;
-    this.group.cx(this.timeline.init.x + this._range * this.timeline._rangeMetric);
-    if (this.onChange) {
-      this.onChange(this._range);
-    }
+    this.group.cx(this.timeline.initPos.x + this._range * this.timeline._rangeMetric);
+    this.change$.next(this._range);
   }
 }
