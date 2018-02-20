@@ -53,9 +53,20 @@ export class TimelineItem {
   }
 
   set range (range: number) {
-    if (range === this._range || range < 0 || range > 100) { return; }
+    range = range < this.timeline.range.min ? this.timeline.range.min : range;
+    range = range > this.timeline.range.max ? this.timeline.range.max : range;
+    if (range === this._range) { return; }
+
     this._range = range;
     this.group.cx(this.timeline.initPos.x + this._range * this.timeline._rangeMetric);
     this.change$.next(this._range);
+  }
+  get range ():number {
+    return this._range;
+  }
+
+  refreshRangePosition() {
+    if (this.range > this.timeline.range.max) { this.range = this.timeline.range.max; }
+    if (this.range < this.timeline.range.min) { this.range = this.timeline.range.min; }
   }
 }
