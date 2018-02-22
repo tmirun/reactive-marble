@@ -2,14 +2,13 @@ import { Point } from './Point';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/from';
-import { TimelineItem } from './TimelineItem';
-import { Payload } from './Payload';
+import { TimelineItem, TimelineItemData } from './TimelineItem';
 import { TimelineLimitLine } from './TimelineLimitLine';
 
 declare const SVG: any;
 
 export class Timeline {
-  public svgSize = { width: 400, height: 200 };
+  public svgSize = { width: 400, height: 80 };
   public margin = 20;
   public padding = 20;
   public center:  Point = new Point(this.svgSize.width / 2, this.svgSize.height / 2);
@@ -40,7 +39,6 @@ export class Timeline {
     // -------|->
     this.endLine = new TimelineLimitLine(this, 100);
     this.endLine.change$.subscribe((range) => {
-      console.log(range);
       this.range.max = range;
       this.items.forEach((timelineItem: TimelineItem) => {
         timelineItem.refreshRangePosition();
@@ -49,7 +47,7 @@ export class Timeline {
 
     this.input$ = input;
 
-    this.inputSubscription = input.subscribe((item: Payload) => {
+    this.inputSubscription = input.subscribe((item: TimelineItemData) => {
       this.items.push(new TimelineItem(this, {range: item.range, value: item.value}));
     });
   }

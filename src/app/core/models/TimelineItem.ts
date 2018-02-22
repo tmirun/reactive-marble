@@ -1,6 +1,17 @@
 import {Timeline} from './Timeline';
-import {Payload} from './Payload';
 import {Subject} from 'rxjs/Subject';
+
+export class TimelineItemData {
+  public range?: number;
+  public value?: any;
+  public color?: string;
+
+  constructor (range, value, color) {
+    this.range = range;
+    this.value = value;
+    this.color = color;
+  }
+}
 
 export class TimelineItem {
   public group: any;
@@ -15,8 +26,8 @@ export class TimelineItem {
 
   private _range: number;
 
-  constructor (timeLine: Timeline, params?: Payload) {
-    const defaultParams: Payload = {
+  constructor (timeLine: Timeline, params?: TimelineItemData) {
+    const defaultParams: TimelineItemData = {
       range: 10,
       value: null,
       color: 'blue'
