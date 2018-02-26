@@ -1,7 +1,5 @@
 import { Point } from './Point';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/observable/from';
 import { TimelineItem, TimelineItemData } from './TimelineItem';
 import { TimelineLimitLine } from './TimelineLimitLine';
 
@@ -16,13 +14,12 @@ export class Timeline {
   public endPos:     Point = new Point(this.svgSize.width - this.margin - this.padding, this.center.y);
   public endLinePos: Point = new Point(this.svgSize.width - this.margin, this.center.y);
   public _rangeMetric = (this.endPos.x - this.initPos.x) / 100;
-  public range = {min: 0, max: 100};
+  public range = { min: 0, max: 100 };
 
   public draw;
   public items: TimelineItem[] = [] as TimelineItem[];
   public endLine: TimelineLimitLine;
   public input$: Observable<any>;
-  public inputSubscription: Subscription;
 
   constructor (id: string, input: Observable<any>) {
     this.draw = SVG(id).size(this.svgSize.width, this.svgSize.height);
@@ -46,11 +43,25 @@ export class Timeline {
     });
 
     this.input$ = input;
-
-    this.inputSubscription = input.subscribe((item: TimelineItemData) => {
-      this.items.push(new TimelineItem(this, {range: item.range, value: item.value}));
+    this.input$.subscribe((items: TimelineItemData[]) => {
+      this.refreshItems(items);
     });
   }
 
-
+  refreshItems (itemsData: TimelineItemData[]) {
+    if (itemsData.length < this.items.length) {
+      for (let i = itemsData.length; i < this.items.length; i++) {
+        this.items[i].remove();
+      }
+      this.items.splice(itemsData.length, this.items.length - itemsData.length);
+    }
+    itemsData.forEach((itemData: TimelineItemData, key: number) => {
+      const currentItem = this.items[key];
+      if (currentItem) {
+        currentItem.range = itemData.range;
+      } else {
+        this.items.push(new TimelineItem(this, {range: itemData.range, value: itemData.value}));
+      }
+    });
+  }
 }
