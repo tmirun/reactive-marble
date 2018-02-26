@@ -17,7 +17,7 @@ export class TimelineItem {
   public group: any;
   public cx: number;
   public cy: number;
-  public circleSize: number = 30;
+  public circleSize = 30;
   public timeline: Timeline;
   public draw;
   public circle;
@@ -72,7 +72,7 @@ export class TimelineItem {
     this.group.cx(this.timeline.initPos.x + this._range * this.timeline._rangeMetric);
     this.change$.next(this._range);
   }
-  get range ():number {
+  get range (): number {
     return this._range;
   }
 

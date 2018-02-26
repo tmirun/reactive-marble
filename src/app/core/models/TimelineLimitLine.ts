@@ -4,7 +4,7 @@ import {Subject} from 'rxjs/Subject';
 export class TimelineLimitLine {
   public cx: number;
   public cy: number;
-  public lineSize: number = 50;
+  public lineSize = 50;
   public timeline: Timeline;
   public draw;
   public line;
