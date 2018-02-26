@@ -80,4 +80,8 @@ export class TimelineItem {
     if (this.range > this.timeline.range.max) { this.range = this.timeline.range.max; }
     if (this.range < this.timeline.range.min) { this.range = this.timeline.range.min; }
   }
+
+  remove(): void {
+    this.group.remove();
+  }
 }
