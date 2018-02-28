@@ -2,6 +2,8 @@ import { Point } from './Point';
 import { Observable } from 'rxjs/Observable';
 import { TimelineItem, TimelineItemData } from './TimelineItem';
 import { TimelineLimitLine } from './TimelineLimitLine';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 declare const SVG: any;
 
@@ -19,9 +21,10 @@ export class Timeline {
   public draw;
   public items: TimelineItem[] = [] as TimelineItem[];
   public endLine: TimelineLimitLine;
-  public input$: Observable<any>;
+  public input$: Subject<TimelineItemData[]> | BehaviorSubject<TimelineItemData[]>;
+  private _itemsData: TimelineItemData[];
 
-  constructor (id: string, input: Observable<any>) {
+  constructor (id: string, input: Subject<TimelineItemData[]> | BehaviorSubject<TimelineItemData[]>) {
     this.draw = SVG(id).size(this.svgSize.width, this.svgSize.height);
 
     // Draw timeline
@@ -43,8 +46,9 @@ export class Timeline {
     });
 
     this.input$ = input;
-    this.input$.subscribe((items: TimelineItemData[]) => {
-      this.refreshItems(items);
+    this.input$.subscribe((itemsData: TimelineItemData[] = []) => {
+      this._itemsData = itemsData;
+      this.refreshItems(itemsData);
     });
   }
 
@@ -59,8 +63,16 @@ export class Timeline {
       const currentItem = this.items[key];
       if (currentItem) {
         currentItem.range = itemData.range;
+        currentItem.text.text(itemData.value + '');
       } else {
-        this.items.push(new TimelineItem(this, {range: itemData.range, value: itemData.value}));
+        const newTimelineItem = new TimelineItem(this, {range: itemData.range, value: itemData.value});
+        this.items.push(newTimelineItem);
+
+        // on item range change
+        newTimelineItem.change$.subscribe((range: number) => {
+          this._itemsData[key].range = range;
+          this.input$.next(this._itemsData);
+        });
       }
     });
   }

@@ -21,7 +21,7 @@ export class TimelineItem {
   public timeline: Timeline;
   public draw;
   public circle;
-  public text;
+  public textSvg;
   public change$: Subject<Number> = new Subject<number>();
 
   private _range: number;
@@ -83,5 +83,6 @@ export class TimelineItem {
 
   remove(): void {
     this.group.remove();
+    this.change$.complete();
   }
 }
