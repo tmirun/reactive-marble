@@ -21,7 +21,7 @@ export class TimelineItem {
   public timeline: Timeline;
   public draw;
   public circle;
-  public textSvg;
+  public text;
   public change$: Subject<Number> = new Subject<number>();
 
   private _range: number;
