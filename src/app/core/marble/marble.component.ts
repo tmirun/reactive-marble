@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/of';
@@ -28,55 +28,8 @@ declare const SVG: any;
 })
 export class MarbleComponent implements OnInit, AfterViewInit {
 
+  @Input() marble: MarbleItem[] = [];
   public timeline;
-  public marble: MarbleItem[] = [
-    {
-      type: 'input',
-      name: 'input1',
-      payload: [
-        new TimelineItemData(10, 1,  '#2196F3'),
-        new TimelineItemData(40, 2,  '#3F51B5'),
-        new TimelineItemData(70, 3,  '#00BCD4')]
-    },
-    {
-      type: 'input',
-      name: 'input2',
-      payload: [
-        new TimelineItemData(60, "A",  '#4CAF50'),
-        new TimelineItemData(90, "B",  '#8BC34A')]
-    },
-    {
-      type: 'label',
-      payload: 'Zip',
-    },
-    {
-      type: 'result',
-      name: 'result1',
-      payload: function(input1, input2) {
-        return Observable.zip( input1, input2).map(function ([item1, item2]) {
-          return new TimelineItemData(null, item1.value + item2.value, item1.color);
-        });
-      }
-    },
-    // {
-    //   type: 'input',
-    //   name: 'input3',
-    //   payload: [
-    //     new TimelineItemData(70, 7, 'red'),
-    //     new TimelineItemData(80, 8,  'red')
-    // },
-    // {
-    //   type: 'label',
-    //   payload: 'xxxxxxxx',
-    // },
-    // {
-    //   type: 'result',
-    //   name: 'result2',
-    //   payload: function(result1, input3) {
-    //     return Observable.merge(result1, input3).map(value => {console.log(value); return value});
-    //   }
-    // },
-  ];
 
   public observables$ = {};
   public timelines = {};
