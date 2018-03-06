@@ -24,6 +24,7 @@ export class TimelineItem {
   public text;
   public change$: Subject<Number> = new Subject<number>();
   private _draggable: boolean;
+  private _color: string;
 
   private _range: number;
 
@@ -35,6 +36,7 @@ export class TimelineItem {
     };
     params = Object.assign(defaultParams, params);
     this._draggable = draggable;
+    this._color = params.color;
 
     this.timeline = timeLine;
     this.cy = this.timeline.center.y;
@@ -79,6 +81,11 @@ export class TimelineItem {
   }
   get range (): number {
     return this._range;
+  }
+
+  set color (color: string) {
+    this._color = color;
+    this.circle.fill(this._color);
   }
 
   refreshRangePosition() {

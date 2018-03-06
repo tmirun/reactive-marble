@@ -68,6 +68,7 @@ export class Timeline {
       const currentItem = this.items[key];
       if (currentItem) {
         currentItem.range = itemData.range;
+        currentItem.color = itemData.color;
         currentItem.text.text(itemData.value + '');
       } else {
         const newTimelineItem = new TimelineItem(this, itemData, this._draggable);
