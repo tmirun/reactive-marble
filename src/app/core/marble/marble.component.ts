@@ -34,16 +34,16 @@ export class MarbleComponent implements OnInit, AfterViewInit {
       type: 'input',
       name: 'input1',
       payload: [
-        new TimelineItemData(10, 1,  'red'),
-        new TimelineItemData(40, 2,  'red'),
-        new TimelineItemData(70, 3,  'red')]
+        new TimelineItemData(10, 1,  '#2196F3'),
+        new TimelineItemData(40, 2,  '#3F51B5'),
+        new TimelineItemData(70, 3,  '#00BCD4')]
     },
     {
       type: 'input',
       name: 'input2',
       payload: [
-        new TimelineItemData(60, "A",  'red'),
-        new TimelineItemData(90, "B",  'red')]
+        new TimelineItemData(60, "A",  '#4CAF50'),
+        new TimelineItemData(90, "B",  '#8BC34A')]
     },
     {
       type: 'label',
@@ -53,18 +53,17 @@ export class MarbleComponent implements OnInit, AfterViewInit {
       type: 'result',
       name: 'result1',
       payload: function(input1, input2) {
-        return Observable.zip( input2, input1).map(([x, y]) => '' + x + y);
+        return Observable.zip( input1, input2).map(function ([item1, item2]) {
+          return new TimelineItemData(null, item1.value + item2.value, item1.color);
+        });
       }
     },
     // {
     //   type: 'input',
     //   name: 'input3',
     //   payload: [
-    //     new TimelineItemData(60, 6,  'red'),
     //     new TimelineItemData(70, 7, 'red'),
-    //     new TimelineItemData(80, 8,  'red'),
-    //     new TimelineItemData(90, 9,  'red'),
-    //     new TimelineItemData(100, 10,  'red')]
+    //     new TimelineItemData(80, 8,  'red')
     // },
     // {
     //   type: 'label',
@@ -74,7 +73,7 @@ export class MarbleComponent implements OnInit, AfterViewInit {
     //   type: 'result',
     //   name: 'result2',
     //   payload: function(result1, input3) {
-    //     return result1.merge(input3);
+    //     return Observable.merge(result1, input3).map(value => {console.log(value); return value});
     //   }
     // },
   ];
@@ -111,7 +110,7 @@ export class MarbleComponent implements OnInit, AfterViewInit {
               itemsDatas.forEach((items) => {
                 const delay$ = new Observable(observer => {
                   items.forEach((item: TimelineItemData) => {
-                      scheduler.schedule(() => observer.next(item.value), item.range);
+                      scheduler.schedule(() => observer.next(item), item.range);
                     });
                     scheduler.schedule(() => observer.complete(), 100);
                   });
@@ -120,8 +119,8 @@ export class MarbleComponent implements OnInit, AfterViewInit {
 
               marbleItem.payload(...inputsDelay$)
                 .subscribe(
-                  (value) => {
-                    resultItems.push(new TimelineItemData(scheduler.now(), value, 'grey'));
+                  (item) => {
+                    resultItems.push(new TimelineItemData(scheduler.now(), item.value, item.color));
                     },
                   null,
                   () => {});
