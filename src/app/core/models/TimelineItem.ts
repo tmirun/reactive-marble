@@ -23,16 +23,18 @@ export class TimelineItem {
   public circle;
   public text;
   public change$: Subject<Number> = new Subject<number>();
+  private _draggable: boolean;
 
   private _range: number;
 
-  constructor (timeLine: Timeline, params?: TimelineItemData) {
+  constructor (timeLine: Timeline, params?: TimelineItemData, draggable: boolean = true) {
     const defaultParams: TimelineItemData = {
       range: 10,
       value: null,
       color: 'blue'
     };
     params = Object.assign(defaultParams, params);
+    this._draggable = draggable;
 
     this.timeline = timeLine;
     this.cy = this.timeline.center.y;
@@ -51,14 +53,17 @@ export class TimelineItem {
     this.group.add(this.text);
 
     this.group.cy(this.timeline.center.y);
-    this.group.draggable((x, y) => {
-      this.range = Math.round(x / this.timeline._rangeMetric);
-      return {x: false, y: false};
-    });
-    this.group.style('cursor', 'ew-resize');
-    this.group.mousedown(() => {
-      this.group.front();
-    });
+
+    if (this._draggable) {
+      this.group.draggable((x, y) => {
+        this.range = Math.round(x / this.timeline._rangeMetric);
+        return {x: false, y: false};
+      });
+      this.group.style('cursor', 'ew-resize');
+      this.group.mousedown(() => {
+        this.group.front();
+      });
+    }
 
     this.range = params.range;
   }

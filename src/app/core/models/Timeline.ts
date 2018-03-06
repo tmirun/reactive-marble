@@ -23,9 +23,14 @@ export class Timeline {
   public endLine: TimelineLimitLine;
   public input$: Subject<TimelineItemData[]> | BehaviorSubject<TimelineItemData[]>;
   private _itemsData: TimelineItemData[];
+  private _draggable: boolean;
 
-  constructor (id: string, input: Subject<TimelineItemData[]> | BehaviorSubject<TimelineItemData[]>) {
+  constructor (id: string,
+               input: Subject<TimelineItemData[]> | BehaviorSubject<TimelineItemData[]>,
+               draggable: boolean = true,
+  ) {
     this.draw = SVG(id).size(this.svgSize.width, this.svgSize.height);
+    this._draggable = draggable;
 
     // Draw timeline
     // ---------->
@@ -37,7 +42,7 @@ export class Timeline {
 
     // Draw Timeline endPos
     // -------|->
-    this.endLine = new TimelineLimitLine(this, 100);
+    this.endLine = new TimelineLimitLine(this, 100, this._draggable);
     this.endLine.change$.subscribe((range) => {
       this.range.max = range;
       this.items.forEach((timelineItem: TimelineItem) => {
@@ -65,7 +70,7 @@ export class Timeline {
         currentItem.range = itemData.range;
         currentItem.text.text(itemData.value + '');
       } else {
-        const newTimelineItem = new TimelineItem(this, itemData);
+        const newTimelineItem = new TimelineItem(this, itemData, this._draggable);
         this.items.push(newTimelineItem);
 
         // on item range change
