@@ -29,11 +29,9 @@ declare const SVG: any;
 export class MarbleComponent implements OnInit, AfterViewInit {
 
   @Input() marble: MarbleItem[] = [];
-  public timeline;
 
   public observables$ = {};
   public timelines = {};
-  public subscribers = {};
 
   constructor() {
     // parser marble
