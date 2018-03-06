@@ -142,10 +142,28 @@ export class MarbleComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit () {
     // generate Timelines SVG
-    Object.keys( this.observables$ ).forEach( key => {
-      const _observable = this.observables$[key];
-      this.timelines[key] = new Timeline(`rm-marble-timeline-${key}`, _observable);
+    Object.keys( this.observables$ ).forEach( name => {
+      let draggable = true;
+      if (this.findMarbleItemByName(name)) {
+        if (this.findMarbleItemByName(name).type === 'result'){
+          draggable = false;
+        }
+      }
+      const _observable = this.observables$[name];
+      this.timelines[name] = new Timeline(`rm-marble-timeline-${name}`, _observable, draggable);
     });
+  }
+
+  private findMarbleItemByName(name) {
+    for (const key in this.marble) {
+      if (this.marble.hasOwnProperty(key)) {
+        const currentMarbleItem = this.marble[key];
+        if ( currentMarbleItem.name === name) {
+          return currentMarbleItem;
+        }
+      }
+    }
+    return null;
   }
 
   private getFnParamNames(fn) {
