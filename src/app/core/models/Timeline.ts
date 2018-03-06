@@ -65,7 +65,7 @@ export class Timeline {
         currentItem.range = itemData.range;
         currentItem.text.text(itemData.value + '');
       } else {
-        const newTimelineItem = new TimelineItem(this, {range: itemData.range, value: itemData.value});
+        const newTimelineItem = new TimelineItem(this, itemData);
         this.items.push(newTimelineItem);
 
         // on item range change
