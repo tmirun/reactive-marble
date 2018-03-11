@@ -7,9 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { MaterialModule } from './material/material.module';
 
-export class PizzaPartyAppModule { }
 @NgModule({
   declarations: [
     AppComponent
@@ -19,8 +17,7 @@ export class PizzaPartyAppModule { }
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    FlexLayoutModule,
-    MaterialModule
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
