@@ -1,6 +1,5 @@
 import { Point } from './Point';
-import { Observable } from 'rxjs/Observable';
-import { TimelineItem, TimelineItemData } from './TimelineItem';
+import { TimelineEmiter, TimelineItemData } from './TimelineEmiter';
 import { TimelineLimitLine } from './TimelineLimitLine';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -11,18 +10,19 @@ export class Timeline {
   public svgSize = { width: 400, height: 80 };
   public margin = 20;
   public padding = 20;
-  public center:  Point = new Point(this.svgSize.width / 2, this.svgSize.height / 2);
-  public initPos:    Point = new Point(this.margin, this.center.y);
-  public endPos:     Point = new Point(this.svgSize.width - this.margin - this.padding, this.center.y);
-  public endLinePos: Point = new Point(this.svgSize.width - this.margin, this.center.y);
+  public center:      Point = new Point(this.svgSize.width / 2, this.svgSize.height / 2);
+  public initPos:     Point = new Point(this.margin, this.center.y);
+  public endPos:      Point = new Point(this.svgSize.width - this.margin - this.padding, this.center.y);
+  public endLinePos:  Point = new Point(this.svgSize.width - this.margin, this.center.y);
   public _rangeMetric = (this.endPos.x - this.initPos.x) / 100;
   public range = { min: 0, max: 100 };
 
   public draw;
-  public items: TimelineItem[] = [] as TimelineItem[];
-  public endLine: TimelineLimitLine;
   public input$: Subject<TimelineItemData[]> | BehaviorSubject<TimelineItemData[]>;
-  private _itemsData: TimelineItemData[];
+  public emiters: TimelineEmiter[] = [] as TimelineEmiter[];
+  public endLine: TimelineLimitLine;
+  private _emitersData: TimelineItemData[] = [];
+  private _endLineData: TimelineItemData;
   private _draggable: boolean;
 
   constructor (id: string,
@@ -40,46 +40,92 @@ export class Timeline {
       .cx(this.endLinePos.x + 6)
       .cy(this.center.y);
 
-    // Draw Timeline endPos
-    // -------|->
+    // // Draw Timeline endPos
+    // // -------|->
     this.endLine = new TimelineLimitLine(this, 100, this._draggable);
     this.endLine.change$.subscribe((range) => {
-      this.range.max = range;
-      this.items.forEach((timelineItem: TimelineItem) => {
-        timelineItem.refreshRangePosition();
-      });
+      this._endLineData.range = range;
+      this.input$.next(this.mergedItemsData());
     });
 
     this.input$ = input;
     this.input$.subscribe((itemsData: TimelineItemData[] = []) => {
-      this._itemsData = itemsData;
-      this.refreshItems(itemsData);
+      this.range.max = this.getItemlimitRangeFromItemsData(itemsData);
+      itemsData = this.limitItemsDataRange(itemsData);
+      const splitData = this.splitItemsData(itemsData);
+
+      this._endLineData = splitData.endLineData;
+      this._emitersData = splitData.emitersData;
+      this.refreshEmiters(this._emitersData);
+
+      this.endLine.range = this.range.max;
     });
   }
 
-  refreshItems (itemsData: TimelineItemData[]) {
-    if (itemsData.length < this.items.length) {
-      for (let i = itemsData.length; i < this.items.length; i++) {
-        this.items[i].remove();
+  refreshEmiters (emitersData: TimelineItemData[]) {
+    // remove items
+    if (emitersData.length < this.emiters.length) {
+      for (let i = emitersData.length; i < this.emiters.length; i++) {
+        this.emiters[i].remove();
       }
-      this.items.splice(itemsData.length, this.items.length - itemsData.length);
+      this.emiters.splice(emitersData.length, this.emiters.length - emitersData.length);
     }
-    itemsData.forEach((itemData: TimelineItemData, key: number) => {
-      const currentItem = this.items[key];
+    emitersData.forEach((emiterData: TimelineItemData, key: number) => {
+      const currentItem = this.emiters[key];
       if (currentItem) {
-        currentItem.range = itemData.range;
-        currentItem.color = itemData.color;
-        currentItem.text.text(itemData.value + '');
+        // modify item;
+        currentItem.range = emiterData.range;
+        currentItem.color = emiterData.color;
+        currentItem.text.text(emiterData.value + '');
       } else {
-        const newTimelineItem = new TimelineItem(this, itemData, this._draggable);
-        this.items.push(newTimelineItem);
+        // create new items
+        const newTimelineEmiter = new TimelineEmiter(this, emiterData, this._draggable);
+        this.emiters.push(newTimelineEmiter);
 
-        // on item range change
-        newTimelineItem.change$.subscribe((range: number) => {
-          this._itemsData[key].range = range;
-          this.input$.next(this._itemsData);
+        // add event on item range change
+        newTimelineEmiter.change$.subscribe((range: number) => {
+          this._emitersData[key].range = range;
+          this.input$.next(this.mergedItemsData());
         });
       }
     });
+  }
+
+  getItemlimitRangeFromItemsData(itemsData: TimelineItemData[]) {
+    let range = 100;
+    itemsData.forEach((itemData: TimelineItemData) => {
+      if (itemData.isLimit) {
+        range = itemData.range;
+      }
+    });
+    return range;
+  }
+
+  limitItemsDataRange (itemsData: TimelineItemData[]) {
+    return itemsData.map((itemData: TimelineItemData) => {
+      if (itemData.range > this.range.max) {
+        itemData.range = this.range.max;
+      }
+      return itemData;
+    });
+  }
+
+  splitItemsData(itemsData: TimelineItemData[]) {
+    const result = {
+      emitersData: [],
+      endLineData: new TimelineItemData(100, {isLimit: true})
+    };
+    itemsData.forEach((itemData: TimelineItemData) => {
+      if (itemData.isLimit) {
+        result.endLineData = itemData;
+      } else {
+        result.emitersData.push(itemData);
+      }
+    });
+    return result;
+  }
+
+  mergedItemsData() {
+    return [...this._emitersData, this._endLineData ];
   }
 }
