@@ -1,15 +1,23 @@
 import {Timeline} from './Timeline';
 import {Subject} from 'rxjs/Subject';
 
+export class TimelineItemDataArgument {
+  public value?: any;
+  public color?: string;
+  public isLimit?: boolean;
+}
+
 export class TimelineItemData {
   public range?: number;
   public value?: any;
   public color?: string;
+  public isLimit?: boolean;
 
-  constructor (range, value, color) {
+  constructor (range, param: TimelineItemDataArgument = {}) {
     this.range = range;
-    this.value = value;
-    this.color = color;
+    this.value = param.value;
+    this.color = param.color;
+    this.isLimit = param.isLimit;
   }
 }
 
