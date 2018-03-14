@@ -38,6 +38,7 @@ export class TimelineLimitLine {
     if (range === this._range || range < 0 || range > 100) { return; }
     this._range = range;
     this.line.cx(this.timeline.initPos.x + this._range * this.timeline._rangeMetric);
+    this.change$.next(this._range);
   }
 
   get range (): number {
