@@ -64,7 +64,7 @@ export class MarbleComponent implements OnInit, AfterViewInit {
                 const delay$ = new Observable(observer => {
                   items.forEach((item: TimelineItemData) => {
                     if (item.isLimit) { return; }
-                    scheduler.schedule(() => observer.next(item), item.range);
+                    scheduler.schedule(() => observer.next(item), item.time);
                   });
                   scheduler.schedule(() => observer.complete(), maxRange);
                 });
@@ -120,13 +120,13 @@ export class MarbleComponent implements OnInit, AfterViewInit {
   }
 
   private getItemlimitRangeFromItemsData(itemsData: TimelineItemData[]) {
-    let range = 100;
+    let time = 100;
     itemsData.forEach((itemData: TimelineItemData) => {
       if (itemData.isLimit) {
-        range = itemData.range;
+        time = itemData.time;
       }
     });
-    return range;
+    return time;
   }
 }
 

@@ -14,8 +14,8 @@ export class Timeline {
   public initPos:     Point = new Point(this.margin, this.center.y);
   public endPos:      Point = new Point(this.svgSize.width - this.margin - this.padding, this.center.y);
   public endLinePos:  Point = new Point(this.svgSize.width - this.margin, this.center.y);
-  public _rangeMetric = (this.endPos.x - this.initPos.x) / 100;
-  public range = { min: 0, max: 100 };
+  public _timeMetric = (this.endPos.x - this.initPos.x) / 100;
+  public time = { min: 0, max: 100 };
 
   public draw;
   public input$: Subject<TimelineItemData[]> | BehaviorSubject<TimelineItemData[]>;
@@ -43,14 +43,14 @@ export class Timeline {
     // // Draw Timeline endPos
     // // -------|->
     this.endLine = new TimelineLimitLine(this, 100, this._draggable);
-    this.endLine.change$.subscribe((range) => {
-      this._endLineData.range = range;
+    this.endLine.change$.subscribe((time) => {
+      this._endLineData.time = time;
       this.input$.next(this.mergedItemsData());
     });
 
     this.input$ = input;
     this.input$.subscribe((itemsData: TimelineItemData[] = []) => {
-      this.range.max = this.getItemlimitRangeFromItemsData(itemsData);
+      this.time.max = this.getItemlimitRangeFromItemsData(itemsData);
       itemsData = this.limitItemsDataRange(itemsData);
       const splitData = this.splitItemsData(itemsData);
 
@@ -58,7 +58,7 @@ export class Timeline {
       this._emitersData = splitData.emitersData;
       this.refreshEmiters(this._emitersData);
 
-      this.endLine.range = this.range.max;
+      this.endLine.time = this.time.max;
     });
   }
 
@@ -74,7 +74,7 @@ export class Timeline {
       const currentItem = this.emiters[key];
       if (currentItem) {
         // modify item;
-        currentItem.range = emiterData.range;
+        currentItem.time = emiterData.time;
         currentItem.color = emiterData.color;
         currentItem.text.text(emiterData.value + '');
       } else {
@@ -82,9 +82,9 @@ export class Timeline {
         const newTimelineEmiter = new TimelineEmiter(this, emiterData, this._draggable);
         this.emiters.push(newTimelineEmiter);
 
-        // add event on item range change
-        newTimelineEmiter.change$.subscribe((range: number) => {
-          this._emitersData[key].range = range;
+        // add event on item time change
+        newTimelineEmiter.change$.subscribe((time: number) => {
+          this._emitersData[key].time = time;
           this.input$.next(this.mergedItemsData());
         });
       }
@@ -92,19 +92,19 @@ export class Timeline {
   }
 
   getItemlimitRangeFromItemsData(itemsData: TimelineItemData[]) {
-    let range = 100;
+    let time = 100;
     itemsData.forEach((itemData: TimelineItemData) => {
       if (itemData.isLimit) {
-        range = itemData.range;
+        time = itemData.time;
       }
     });
-    return range;
+    return time;
   }
 
   limitItemsDataRange (itemsData: TimelineItemData[]) {
     return itemsData.map((itemData: TimelineItemData) => {
-      if (itemData.range > this.range.max) {
-        itemData.range = this.range.max;
+      if (itemData.time > this.time.max) {
+        itemData.time = this.time.max;
       }
       return itemData;
     });

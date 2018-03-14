@@ -8,13 +8,13 @@ export class TimelineItemDataArgument {
 }
 
 export class TimelineItemData {
-  public range?: number;
+  public time?: number;
   public value?: any;
   public color?: string;
   public isLimit?: boolean;
 
-  constructor (range, param: TimelineItemDataArgument = {}) {
-    this.range = range;
+  constructor (time, param: TimelineItemDataArgument = {}) {
+    this.time = time;
     this.value = param.value;
     this.color = param.color;
     this.isLimit = param.isLimit;
@@ -34,11 +34,11 @@ export class TimelineEmiter {
   private _draggable: boolean;
   private _color: string;
 
-  private _range: number;
+  private _time: number;
 
   constructor (timeLine: Timeline, params?: TimelineItemData, draggable: boolean = true) {
     const defaultParams: TimelineItemData = {
-      range: 10,
+      time: 10,
       value: null,
       color: 'blue'
     };
@@ -66,7 +66,7 @@ export class TimelineEmiter {
 
     if (this._draggable) {
       this.group.draggable((x, y) => {
-        this.range = Math.round(x / this.timeline._rangeMetric);
+        this.time = Math.round(x / this.timeline._timeMetric);
         return {x: false, y: false};
       });
       this.group.style('cursor', 'ew-resize');
@@ -75,20 +75,20 @@ export class TimelineEmiter {
       });
     }
 
-    this.range = params.range;
+    this.time = params.time;
   }
 
-  set range (range: number) {
-    range = range < this.timeline.range.min ? this.timeline.range.min : range;
-    range = range > this.timeline.range.max ? this.timeline.range.max : range;
-    if (range === this._range) { return; }
+  set time (time: number) {
+    time = time < this.timeline.time.min ? this.timeline.time.min : time;
+    time = time > this.timeline.time.max ? this.timeline.time.max : time;
+    if (time === this._time) { return; }
 
-    this._range = range;
-    this.group.cx(this.timeline.initPos.x + this._range * this.timeline._rangeMetric);
-    this.change$.next(this._range);
+    this._time = time;
+    this.group.cx(this.timeline.initPos.x + this._time * this.timeline._timeMetric);
+    this.change$.next(this._time);
   }
-  get range (): number {
-    return this._range;
+  get time (): number {
+    return this._time;
   }
 
   set color (color: string) {

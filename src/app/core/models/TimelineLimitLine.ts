@@ -10,10 +10,10 @@ export class TimelineLimitLine {
   public line;
   public change$: Subject<number> = new Subject<number>();
 
-  private _range: number;
+  private _time: number;
   private _draggable: boolean;
 
-  constructor (timeLine: Timeline, range, draggable: boolean = true) {
+  constructor (timeLine: Timeline, time, draggable: boolean = true) {
     this.timeline = timeLine;
     this.draw = this.timeline.draw;
     this._draggable = draggable;
@@ -24,23 +24,23 @@ export class TimelineLimitLine {
 
     if (this._draggable) {
       this.line.draggable((x, y) => {
-        this.range = Math.round((x - this.timeline.initPos.x) / this.timeline._rangeMetric);
+        this.time = Math.round((x - this.timeline.initPos.x) / this.timeline._timeMetric);
         return {x: false, y: false};
       });
       this.line.style('cursor', 'ew-resize');
     }
 
-    this.range = range;
+    this.time = time;
   }
 
-  set range (range: number) {
-    if (range === this._range || range < 0 || range > 100) { return; }
-    this._range = range;
-    this.line.cx(this.timeline.initPos.x + this._range * this.timeline._rangeMetric);
-    this.change$.next(this._range);
+  set time (time: number) {
+    if (time === this._time || time < 0 || time > 100) { return; }
+    this._time = time;
+    this.line.cx(this.timeline.initPos.x + this._time * this.timeline._timeMetric);
+    this.change$.next(this._time);
   }
 
-  get range (): number {
-    return this._range;
+  get time (): number {
+    return this._time;
   }
 }
