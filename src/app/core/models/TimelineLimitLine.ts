@@ -25,7 +25,6 @@ export class TimelineLimitLine {
     if (this._draggable) {
       this.line.draggable((x, y) => {
         this.range = Math.round((x - this.timeline.initPos.x) / this.timeline._rangeMetric);
-        this.change$.next(this.range);
         return {x: false, y: false};
       });
       this.line.style('cursor', 'ew-resize');
