@@ -21,7 +21,7 @@ export class TimelineItemData {
   }
 }
 
-export class TimelineItem {
+export class TimelineEmiter {
   public group: any;
   public cx: number;
   public cy: number;
@@ -94,11 +94,6 @@ export class TimelineItem {
   set color (color: string) {
     this._color = color;
     this.circle.fill(this._color);
-  }
-
-  refreshRangePosition() {
-    if (this.range > this.timeline.range.max) { this.range = this.timeline.range.max; }
-    if (this.range < this.timeline.range.min) { this.range = this.timeline.range.min; }
   }
 
   remove(): void {
