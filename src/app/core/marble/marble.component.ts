@@ -181,7 +181,7 @@ export class MarbleComponent implements OnInit, OnChanges {
 
   private isInt(value: any) {
     return !isNaN(value) &&
-      parseInt(Number(value), 10) === value &&
+      parseInt(Number(value) as any, 10) === value &&
       !isNaN(parseInt(value, 10));
   }
 
