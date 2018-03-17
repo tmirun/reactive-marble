@@ -57,39 +57,59 @@ export class MarbleComponent implements OnInit, OnChanges {
           const inputsName = this.getFnParamNames(marbleItem.payload);
 
           inputsName.forEach(inputName => {
-            if (!inputName) { return; }
+            if (!inputName || inputName === 'scheduler') { return; }
             resultInputs$.push(this.observables$[inputName]);
           });
 
-          Observable.combineLatest(...resultInputs$)
-            .map((itemsDatas: [TimelineItemData[]]) => {
-              const resultItems = [];
-              const inputsDelay$ = [];
-              const scheduler = new VirtualTimeScheduler(undefined, 100);
-              itemsDatas.forEach((items) => {
-                const maxRange = this.getItemLimitRangeFromItemsData(items);
-                const delay$ = new Observable(observer => {
-                  items.forEach((item: TimelineItemData) => {
-                    if (item.isLimit) { return; }
-                    scheduler.schedule(() => observer.next(item), item.time);
+          if (resultInputs$.length) {
+            Observable.combineLatest(...resultInputs$)
+              .map((itemsDatas: [TimelineItemData[]]) => {
+                const resultItems = [];
+                const inputsDelay$ = [];
+                const scheduler = new VirtualTimeScheduler(undefined, 100);
+                itemsDatas.forEach((items) => {
+                  const maxRange = this.getItemLimitRangeFromItemsData(items);
+                  const delay$ = new Observable(observer => {
+                    items.forEach((item: TimelineItemData) => {
+                      if (item.isLimit) {
+                        return;
+                      }
+                      scheduler.schedule(() => observer.next(item), item.time);
+                    });
+                    scheduler.schedule(() => observer.complete(), maxRange);
                   });
-                  scheduler.schedule(() => observer.complete(), maxRange);
+                  inputsDelay$.push(delay$);
                 });
-                inputsDelay$.push(delay$);
-              });
 
-              marbleItem.payload(...inputsDelay$)
-                .subscribe(
-                  (item) => {
-                    resultItems.push(new TimelineItemData(scheduler.now(), {value: item.value, color: item.color}));
-                  }, null,
-                  () => { resultItems.push(new TimelineItemData(scheduler.now(), {isLimit: true}))})
-              scheduler.flush();
-              return resultItems;
-            })
-            .subscribe((resultItems) => {
-              this.observables$[marbleItem.name].next(resultItems);
-            });
+                marbleItem.payload(...inputsDelay$, scheduler)
+                  .subscribe(
+                    (item) => {
+                      resultItems.push(new TimelineItemData(scheduler.now(), {value: item.value, color: item.color}));
+                    }, null,
+                    () => {
+                      resultItems.push(new TimelineItemData(scheduler.now(), {isLimit: true}))
+                    })
+                scheduler.flush();
+                return resultItems;
+              })
+              .subscribe((resultItems) => {
+                this.observables$[marbleItem.name].next(resultItems);
+              });
+          } else {
+            const scheduler = new VirtualTimeScheduler(undefined, 100);
+            const resultItems = [];
+            marbleItem.payload(scheduler)
+              .subscribe(
+                (item) => {
+                  console.log(item)
+                  resultItems.push(new TimelineItemData(scheduler.now(), {value: item.value, color: item.color}));
+                }, null,
+                () => {
+                  resultItems.push(new TimelineItemData(scheduler.now(), {isLimit: true}));
+                });
+            scheduler.flush();
+            this.observables$[marbleItem.name].next(resultItems);
+          }
           break;
       }
     });
