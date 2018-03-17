@@ -2,4 +2,8 @@
   .rm-marble {
     display: inline;
   }
+
+  /deep/ .rm-marble-label {
+    white-space: pre-wrap;
+  }
 }
