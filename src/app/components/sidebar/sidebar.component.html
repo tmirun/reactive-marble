@@ -1,5 +1,5 @@
 <ul nz-menu nzMode="inline" style="width: 240px;" fxFlexFill="">
-  <li nz-submenu *ngFor="let listKey of objectKeys(list)">
+  <li nz-submenu nzOpen *ngFor="let listKey of objectKeys(list)">
     <span title> {{listKey}} </span>
     <ul>
       <li nz-menu-item *ngFor="let itemKey of objectKeys(list[listKey])">
