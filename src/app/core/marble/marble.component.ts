@@ -83,11 +83,13 @@ export class MarbleComponent implements OnInit, OnChanges {
 
                 marbleItem.payload(...inputsDelay$, scheduler)
                   .subscribe(
-                    (item) => {
-                      resultItems.push(new TimelineItemData(scheduler.now(), {value: item.value, color: item.color}));
+                    (itemOrNum) => {
+                      const newItemData = this.isInt(itemOrNum) ? new TimelineItemData(scheduler.now(), {value: itemOrNum}) :
+                        new TimelineItemData(scheduler.now(), {value: itemOrNum.value, color: itemOrNum.color});
+                      resultItems.push(newItemData);
                     }, null,
                     () => {
-                      resultItems.push(new TimelineItemData(scheduler.now(), {isLimit: true}))
+                      resultItems.push(new TimelineItemData(scheduler.now(), {isLimit: true}));
                     })
                 scheduler.flush();
                 return resultItems;
@@ -100,9 +102,10 @@ export class MarbleComponent implements OnInit, OnChanges {
             const resultItems = [];
             marbleItem.payload(scheduler)
               .subscribe(
-                (item) => {
-                  console.log(item)
-                  resultItems.push(new TimelineItemData(scheduler.now(), {value: item.value, color: item.color}));
+                (itemOrNum) => {
+                  const newItemData = this.isInt(itemOrNum) ? new TimelineItemData(scheduler.now(), {value: itemOrNum}) :
+                    new TimelineItemData(scheduler.now(), {value: itemOrNum.value, color: itemOrNum.color});
+                  resultItems.push(newItemData);
                 }, null,
                 () => {
                   resultItems.push(new TimelineItemData(scheduler.now(), {isLimit: true}));
@@ -152,6 +155,7 @@ export class MarbleComponent implements OnInit, OnChanges {
       const newDiv = document.createElement('div');
       newDiv.id = this.div_item_prefix + marbleItem.name;
       if (marbleItem.type === 'label') {
+        newDiv.className = 'rm-marble-label'
         newDiv.innerHTML = marbleItem.payload;
       }
       this.marbleDom.nativeElement.appendChild(newDiv);
@@ -173,6 +177,12 @@ export class MarbleComponent implements OnInit, OnChanges {
   private getFnParamNames(fn) {
     const functionString = fn.toString();
     return functionString.match(/\(.*?\)/)[0].replace(/[()]/gi,'').replace(/\s/gi,'').split(',');
+  }
+
+  private isInt(value: any) {
+    return !isNaN(value) &&
+      parseInt(Number(value), 10) === value &&
+      !isNaN(parseInt(value, 10));
   }
 
   private getItemLimitRangeFromItemsData(itemsData: TimelineItemData[]) {
