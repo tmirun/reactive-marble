@@ -67,7 +67,8 @@ const list = {
     {
       type: 'label',
       payload: `
-        Observable.from([0, 1, 2]).delayWhen(i => Observable.timer(i * 10));
+        Observable.from([0, 1, 2])
+        .delayWhen(i => Observable.timer(i * 10));
       `
     },
     {
