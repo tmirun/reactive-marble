@@ -40,11 +40,11 @@ export class TimelineEmiter {
     const defaultParams: TimelineItemData = {
       time: 10,
       value: null,
-      color: 'blue'
+      color: 'white'
     };
     params = Object.assign(defaultParams, params);
     this._draggable = draggable;
-    this._color = params.color;
+    this._color = params.color || 'white';
 
     this.timeline = timeLine;
     this.cy = this.timeline.center.y;
@@ -53,7 +53,7 @@ export class TimelineEmiter {
     this.group = this.draw.group();
 
     this.circle = this.draw.circle(this.circleSize);
-    this.circle.fill(params.color);
+    this.circle.fill(this._color);
     this.circle.stroke({ width: 1 });
 
     this.text = this.draw.text(`${params.value}`);
@@ -92,7 +92,8 @@ export class TimelineEmiter {
   }
 
   set color (color: string) {
-    this._color = color;
+    this._color = color || 'white';
+    console.log(this._color);
     this.circle.fill(this._color);
   }
 
