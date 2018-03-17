@@ -1,14 +1,2 @@
-<div id="rm-marble" class="rm-marble">
-  <div *ngFor='let marbleItem of marble; let i = index' [ngSwitch]="marbleItem.type">
-    <div *ngSwitchCase="'input'" attr.id="rm-marble-timeline-{{marbleItem.name}}">
-    </div>
-    <div *ngSwitchCase="'label'">
-      {{marbleItem.payload}}
-    </div>
-    <div *ngSwitchCase="'result'" attr.id="rm-marble-timeline-{{marbleItem.name}}">
-    </div>
-    <div *ngSwitchDefault>
-      cant recognize type {{marbleItem.name}}
-    </div>
-  </div>
+<div id="rm-marble" class="rm-marble" #marbleDom>
 </div>

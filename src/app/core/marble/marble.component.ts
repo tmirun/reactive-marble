@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Input} from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges, ViewChild, ElementRef} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/of';
@@ -26,12 +26,15 @@ declare const SVG: any;
   templateUrl: './marble.component.html',
   styleUrls: ['./marble.component.scss']
 })
-export class MarbleComponent implements OnInit, AfterViewInit {
+export class MarbleComponent implements OnInit, OnChanges {
 
   @Input() marble: MarbleItem[] = [];
+  @ViewChild('marbleDom') marbleDom: ElementRef;
 
   public observables$ = {};
   public timelines = {};
+
+  private div_item_prefix = 'rm-marble-item-';
 
   constructor() {
 
@@ -39,6 +42,9 @@ export class MarbleComponent implements OnInit, AfterViewInit {
 
   // NEED REFACTOR
   ngOnInit() {
+  }
+
+  setObservables() {
     this.marble.forEach((marbleItem: MarbleItem) => {
       switch (marbleItem.type) {
         case 'input':
@@ -51,6 +57,7 @@ export class MarbleComponent implements OnInit, AfterViewInit {
           const inputsName = this.getFnParamNames(marbleItem.payload);
 
           inputsName.forEach(inputName => {
+            if (!inputName) { return; }
             resultInputs$.push(this.observables$[inputName]);
           });
 
@@ -60,7 +67,7 @@ export class MarbleComponent implements OnInit, AfterViewInit {
               const inputsDelay$ = [];
               const scheduler = new VirtualTimeScheduler(undefined, 100);
               itemsDatas.forEach((items) => {
-                const maxRange = this.getItemlimitRangeFromItemsData(items);
+                const maxRange = this.getItemLimitRangeFromItemsData(items);
                 const delay$ = new Observable(observer => {
                   items.forEach((item: TimelineItemData) => {
                     if (item.isLimit) { return; }
@@ -88,7 +95,7 @@ export class MarbleComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit () {
+  draw () {
     // generate Timelines SVG
     Object.keys( this.observables$ ).forEach( name => {
       let draggable = true;
@@ -98,7 +105,36 @@ export class MarbleComponent implements OnInit, AfterViewInit {
         }
       }
       const _observable = this.observables$[name];
-      this.timelines[name] = new Timeline(`rm-marble-timeline-${name}`, _observable, draggable);
+      this.timelines[name] = new Timeline(`${this.div_item_prefix}${name}`, _observable, draggable);
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.marble.currentValue) {
+      this.observables$ = {};
+      this.timelines = {};
+      this.clearDom();
+      this.createDivs();
+      this.setObservables();
+      this.draw();
+    }
+  }
+
+  clearDom() {
+    const el = this.marbleDom.nativeElement;
+    while (el.hasChildNodes()) {
+      el.removeChild(el.lastChild);
+    }
+  }
+
+  createDivs () {
+    this.marble.forEach((marbleItem) => {
+      const newDiv = document.createElement('div');
+      newDiv.id = this.div_item_prefix + marbleItem.name;
+      if (marbleItem.type === 'label') {
+        newDiv.innerHTML = marbleItem.payload;
+      }
+      this.marbleDom.nativeElement.appendChild(newDiv);
     });
   }
 
@@ -119,7 +155,7 @@ export class MarbleComponent implements OnInit, AfterViewInit {
     return functionString.match(/\(.*?\)/)[0].replace(/[()]/gi,'').replace(/\s/gi,'').split(',');
   }
 
-  private getItemlimitRangeFromItemsData(itemsData: TimelineItemData[]) {
+  private getItemLimitRangeFromItemsData(itemsData: TimelineItemData[]) {
     let time = 100;
     itemsData.forEach((itemData: TimelineItemData) => {
       if (itemData.isLimit) {
