@@ -5,6 +5,8 @@ import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/interval';
+import 'rxjs/add/observable/range';
+import 'rxjs/add/observable/timer';
 
 // "Creating Observables"
 const list = {
@@ -68,14 +70,14 @@ const list = {
       type: 'label',
       payload: `
         Observable.from([0, 1, 2])
-        .delayWhen(i => Observable.timer(i * 10));
+          .delayWhen(i => Observable.timer(i * 10));
       `
     },
     {
       type: 'result',
       name: 'result1',
       payload: function(scheduler) {
-        return Observable.from([0, 1, 2, 3]).delayWhen(i => Observable.timer(i * 10, scheduler));
+        return Observable.from([0, 1, 2, 3]).delayWhen(i => Observable.timer(i * 10));
       }
     }
   ],
@@ -92,6 +94,36 @@ const list = {
       }
     }
   ],
+  'range': [
+    {
+      type: 'label',
+      payload: `
+        Observable.range(1, 10)
+          .delayWhen(i => Observable.timer(i * 10, scheduler))
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload: function(scheduler) {
+        return Observable.range(1, 10).delayWhen(i => Observable.timer(i * 10, scheduler));
+      }
+    }
+  ],
+
+  'timer': [
+    {
+      type: 'label',
+      payload: `Observable.timer(40, 10)`
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload: function(scheduler) {
+        return Observable.timer(40, 10, scheduler);
+      }
+    }
+  ]
 };
 
 export default list;
