@@ -83,14 +83,14 @@ export class MarbleComponent implements OnInit, OnChanges {
 
                 marbleItem.payload(...inputsDelay$, scheduler)
                   .subscribe(
-                    (itemOrNum) => {
-                      const newItemData = this.isInt(itemOrNum) ? new TimelineItemData(scheduler.now(), {value: itemOrNum}) :
-                        new TimelineItemData(scheduler.now(), {value: itemOrNum.value, color: itemOrNum.color});
+                    (item) => {
+                      const newItemData = typeof item === 'object' ?  new TimelineItemData(scheduler.now(), {value: item.value, color: item.color}) :
+                        new TimelineItemData(scheduler.now(), {value: item});
                       resultItems.push(newItemData);
                     }, null,
                     () => {
                       resultItems.push(new TimelineItemData(scheduler.now(), {isLimit: true}));
-                    })
+                    });
                 scheduler.flush();
                 return resultItems;
               })
@@ -102,9 +102,9 @@ export class MarbleComponent implements OnInit, OnChanges {
             const resultItems = [];
             marbleItem.payload(scheduler)
               .subscribe(
-                (itemOrNum) => {
-                  const newItemData = this.isInt(itemOrNum) ? new TimelineItemData(scheduler.now(), {value: itemOrNum}) :
-                    new TimelineItemData(scheduler.now(), {value: itemOrNum.value, color: itemOrNum.color});
+                (item) => {
+                  const newItemData = typeof item === 'object' ?  new TimelineItemData(scheduler.now(), {value: item.value, color: item.color}) :
+                    new TimelineItemData(scheduler.now(), {value: item});
                   resultItems.push(newItemData);
                 }, null,
                 () => {
@@ -177,12 +177,6 @@ export class MarbleComponent implements OnInit, OnChanges {
   private getFnParamNames(fn) {
     const functionString = fn.toString();
     return functionString.match(/\(.*?\)/)[0].replace(/[()]/gi,'').replace(/\s/gi,'').split(',');
-  }
-
-  private isInt(value: any) {
-    return !isNaN(value) &&
-      parseInt(Number(value) as any, 10) === value &&
-      !isNaN(parseInt(value, 10));
   }
 
   private getItemLimitRangeFromItemsData(itemsData: TimelineItemData[]) {
