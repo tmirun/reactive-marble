@@ -77,6 +77,7 @@ export class Timeline {
         currentItem.time = emiterData.time;
         currentItem.color = emiterData.color;
         currentItem.text.text(emiterData.value + '');
+        currentItem.refreshTextCenter();
       } else {
         // create new items
         const newTimelineEmiter = new TimelineEmiter(this, emiterData, this._draggable);

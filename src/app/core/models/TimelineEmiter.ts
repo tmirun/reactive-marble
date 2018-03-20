@@ -97,6 +97,10 @@ export class TimelineEmiter {
     this.circle.fill(this._color);
   }
 
+  refreshTextCenter () {
+    this.text.cx(this.circleSize / 2).cy(this.circleSize / 2);
+  }
+
   remove(): void {
     this.group.remove();
     this.change$.complete();
