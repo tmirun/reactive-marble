@@ -54,6 +54,8 @@ export class MarbleComponent implements OnInit, OnChanges {
         case 'result':
           this.observables$[marbleItem.name] = new BehaviorSubject([]);
           const resultInputs$ = [];
+
+          // error en modo --pro de compilacion, xk se cambia nombre de argumento
           const inputsName = this.getFnParamNames(marbleItem.payload);
 
           inputsName.forEach(inputName => {

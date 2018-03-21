@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --base-href 'https://tmirun.github.io/reactive-marble/' && npm run push-gh-pages",
+    "build": "ng build --base-href 'https://tmirun.github.io/reactive-marble/' && npm run push-gh-pages",
     "push-gh-pages": "ngh",
     "test": "ng test",
     "lint": "ng lint",
