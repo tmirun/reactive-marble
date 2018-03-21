@@ -17,7 +17,11 @@ const list = {
     {
       type: 'label',
       payload: `
-        Observable.empty();
+        const interval = Observable.interval(30);
+        observable.buffer(interval)
+          .map((items) => {
+            return items.map((item) => item.value).join(',');
+          });
       `
     },
     {
