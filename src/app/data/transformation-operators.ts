@@ -2,38 +2,142 @@ import { TimelineItemData } from '../core/models/TimelineEmiter';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/buffer';
+import 'rxjs/add/operator/bufferCount';
+import 'rxjs/add/operator/bufferTime';
+import 'rxjs/add/operator/bufferWhen';
+import 'rxjs/add/operator/take';
 
 const list = {
 
   'buffer': [
     {
       type: 'input',
-      name: 'input1',
+      name: 'input',
       payload: [
         {time: 10, value: 1 }, {time: 20, value: 2 },
-        {time: 40, value: 3 }, {time: 60, value: 6 },
-        {time: 70, value: 5 }, {time: 60, value: 9 }]
+        {time: 30, value: 3 }, {time: 60, value: 6 },
+        {time: 70, value: 5 }, {time: 90, value: 9 }]
     },
     {
       type: 'label',
       payload: `
         const interval = Observable.interval(30);
         observable.buffer(interval)
-          .map((items) => {
-            return items.map((item) => item.value).join(',');
-          });
       `
     },
     {
       type: 'result',
       name: 'result1',
-      payload: function(input1, scheduler) {
+      payload: function(input, scheduler) {
         const interval = Observable.interval(30, scheduler);
-        return input1.buffer(interval)
+        return input.buffer(interval)
           .map((items) => {
-            console.log(items.map((item) => item.value).join(','));
             return items.map((item) => item.value).join(',');
           });
+      }
+    }
+  ],
+
+  'bufferCount': [
+    {
+      type: 'input',
+      name: 'input',
+      payload: [
+        {time: 10, value: 1 }, {time: 20, value: 2 },
+        {time: 30, value: 3 }, {time: 60, value: 6 },
+        {time: 70, value: 5 }, {time: 90, value: 9 }]
+    },
+    {
+      type: 'label',
+      payload: `
+        observable.bufferCount(2)
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload: function(input) {
+        return input.bufferCount(2)
+          .map((items) => {
+            return items.map((item) => item.value).join(',');
+          });
+      }
+    }
+  ],
+
+  'bufferTime': [
+    {
+      type: 'input',
+      name: 'input',
+      payload: [
+        {time: 0, value: 1 }, {time: 20, value: 2 },
+        {time: 30, value: 3 }, {time: 60, value: 6 },
+        {time: 70, value: 5 }, {time: 90, value: 9 }]
+    },
+    {
+      type: 'label',
+      payload: `
+        observable.bufferTime(10)
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload: function(input, scheduler) {
+        return input.bufferTime(10, scheduler)
+          .map((items) => {
+            return items.map((item) => item.value).join(',');
+          });
+      }
+    }
+  ],
+
+  'bufferToggle': [
+    {
+      type: 'input',
+      name: 'input',
+      payload: [
+        {time: 0, value: 1 }, {time: 20, value: 2 },
+        {time: 30, value: 3 }, {time: 60, value: 6 },
+        {time: 70, value: 5 }, {time: 90, value: 9 }]
+    },
+    {
+      type: 'label',
+      payload: `
+        TODO!!!
+      `
+    }
+  ],
+
+  'bufferWhen': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 1 }, {time: 20, value: 2 },
+        {time: 40, value: 3 }, {time: 50, value: 4 },
+        {time: 70, value: 5 }, {time: 90, value: 6 }]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [{time: 50, isLimit: true}]
+    },
+    {
+      type: 'label',
+      payload: `
+        observable.bufferWhen(() => {
+          return Observable.empty().delay(10)
+        });
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload (input1, input2, scheduler) {
+        return input1.bufferWhen(() => input2)
+          .take(10) // limit to 10
+          .map((items) => items.map((item) => item.value).join(','));
       }
     }
   ]
