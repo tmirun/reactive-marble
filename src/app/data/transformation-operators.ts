@@ -6,6 +6,9 @@ import 'rxjs/add/operator/bufferCount';
 import 'rxjs/add/operator/bufferTime';
 import 'rxjs/add/operator/bufferWhen';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/operator/concatMapTo';
+import 'rxjs/add/operator/exhaustMap';
 
 const list = {
 
@@ -138,6 +141,97 @@ const list = {
         return input1.bufferWhen(() => input2)
           .take(10) // limit to 10
           .map((items) => items.map((item) => item.value).join(','));
+      }
+    }
+  ],
+
+  'concatMap': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 1 }, {time: 20, value: 2 },
+        {time: 50, value: 4 }, {time: 90, value: 6 }]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [{time: 0,  value: 'a' }, {time: 10, value: 'b' },
+                {time: 20, value: 'c' }, {time: 30, isLimit: true}]
+    },
+    {
+      type: 'label',
+      payload: `
+        input1.concatMap((item) => {
+          return input2.map((item2) => item.value + item2.value);
+        });
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload (input1, input2) {
+        return input1.concatMap((item) => {
+          return input2.map((item2) => {
+            return item.value + item2.value;
+          });
+        });
+      }
+    }
+  ],
+
+  'concatMapTo': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 1 }, {time: 20, value: 2 },
+        {time: 50, value: 4 }, {time: 90, value: 6 }]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [{time: 0,  value: 'a' }, {time: 20, value: 'b' }, {time: 30, isLimit: true}]
+    },
+    {
+      type: 'label',
+      payload: `
+        input1.concatMapTo(input2)
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload (input1, input2) {
+        return input1.concatMapTo(input2);
+      }
+    }
+  ],
+  'exhaustMap': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 1 }, {time: 20, value: 2 },
+        {time: 50, value: 4 }, {time: 90, value: 6 }]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [{time: 0,  value: 'a' }, {time: 20, value: 'b' }, {time: 30, isLimit: true}]
+    },
+    {
+      type: 'label',
+      payload: `
+        input1.exhaustMap((item1) =>
+          input2.map((item2) => item1.value + item2.value))
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload (input1, input2) {
+        return input1.exhaustMap((item1) => input2.map((item2) => item1.value + item2.value));
       }
     }
   ]
