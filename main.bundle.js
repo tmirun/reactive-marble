@@ -411,6 +411,7 @@ var MarbleComponent = /** @class */ (function () {
                     });
                     if (resultInputs$_1.length) {
                         __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["a" /* Observable */].combineLatest.apply(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["a" /* Observable */], resultInputs$_1).map(function (itemsDatas) {
+                            console.log(itemsDatas);
                             var resultItems = [];
                             var inputsDelay$ = [];
                             var scheduler = new __WEBPACK_IMPORTED_MODULE_19_rxjs_scheduler_VirtualTimeScheduler__["a" /* VirtualTimeScheduler */](undefined, 100);
@@ -446,6 +447,7 @@ var MarbleComponent = /** @class */ (function () {
                         var resultItems_1 = [];
                         marbleItem.payload(scheduler_1)
                             .subscribe(function (item) {
+                            console.log(item);
                             var newItemData = typeof item === 'object' ? new __WEBPACK_IMPORTED_MODULE_17__models_TimelineEmiter__["b" /* TimelineItemData */](scheduler_1.now(), { value: item.value, color: item.color }) :
                                 new __WEBPACK_IMPORTED_MODULE_17__models_TimelineEmiter__["b" /* TimelineItemData */](scheduler_1.now(), { value: item });
                             resultItems_1.push(newItemData);
@@ -1059,6 +1061,20 @@ var operators = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_interval__ = __webpack_require__("../../../../rxjs/_esm5/add/observable/interval.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_buffer__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/buffer.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_bufferCount__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/bufferCount.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_bufferTime__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/bufferTime.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_bufferWhen__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/bufferWhen.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_take__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/take.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_concatMap__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/concatMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_concatMapTo__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/concatMapTo.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_exhaustMap__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/exhaustMap.js");
+
+
+
+
+
+
+
 
 
 
@@ -1066,27 +1082,203 @@ var list = {
     'buffer': [
         {
             type: 'input',
-            name: 'input1',
+            name: 'input',
             payload: [
                 { time: 10, value: 1 }, { time: 20, value: 2 },
-                { time: 40, value: 3 }, { time: 60, value: 6 },
-                { time: 70, value: 5 }, { time: 60, value: 9 }
+                { time: 30, value: 3 }, { time: 60, value: 6 },
+                { time: 70, value: 5 }, { time: 90, value: 9 }
             ]
         },
         {
             type: 'label',
-            payload: "\n        const interval = Observable.interval(30);\n        observable.buffer(interval)\n          .map((items) => {\n            return items.map((item) => item.value).join(',');\n          });\n      "
+            payload: "\n        const interval = Observable.interval(30);\n        observable.buffer(interval)\n      "
         },
         {
             type: 'result',
             name: 'result1',
-            payload: function (input1, scheduler) {
+            payload: function (input, scheduler) {
                 var interval = __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__["a" /* Observable */].interval(30, scheduler);
-                return input1.buffer(interval)
+                return input.buffer(interval)
                     .map(function (items) {
-                    console.log(items.map(function (item) { return item.value; }).join(','));
                     return items.map(function (item) { return item.value; }).join(',');
                 });
+            }
+        }
+    ],
+    'bufferCount': [
+        {
+            type: 'input',
+            name: 'input',
+            payload: [
+                { time: 10, value: 1 }, { time: 20, value: 2 },
+                { time: 30, value: 3 }, { time: 60, value: 6 },
+                { time: 70, value: 5 }, { time: 90, value: 9 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        observable.bufferCount(2)\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input) {
+                return input.bufferCount(2)
+                    .map(function (items) {
+                    return items.map(function (item) { return item.value; }).join(',');
+                });
+            }
+        }
+    ],
+    'bufferTime': [
+        {
+            type: 'input',
+            name: 'input',
+            payload: [
+                { time: 0, value: 1 }, { time: 20, value: 2 },
+                { time: 30, value: 3 }, { time: 60, value: 6 },
+                { time: 70, value: 5 }, { time: 90, value: 9 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        observable.bufferTime(10)\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input, scheduler) {
+                return input.bufferTime(10, scheduler)
+                    .map(function (items) {
+                    return items.map(function (item) { return item.value; }).join(',');
+                });
+            }
+        }
+    ],
+    'bufferToggle': [
+        {
+            type: 'input',
+            name: 'input',
+            payload: [
+                { time: 0, value: 1 }, { time: 20, value: 2 },
+                { time: 30, value: 3 }, { time: 60, value: 6 },
+                { time: 70, value: 5 }, { time: 90, value: 9 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO!!!\n      "
+        }
+    ],
+    'bufferWhen': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 1 }, { time: 20, value: 2 },
+                { time: 40, value: 3 }, { time: 50, value: 4 },
+                { time: 70, value: 5 }, { time: 90, value: 6 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [{ time: 50, isLimit: true }]
+        },
+        {
+            type: 'label',
+            payload: "\n        observable.bufferWhen(() => {\n          return Observable.empty().delay(10)\n        });\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2, scheduler) {
+                return input1.bufferWhen(function () { return input2; })
+                    .take(10) // limit to 10
+                    .map(function (items) { return items.map(function (item) { return item.value; }).join(','); });
+            }
+        }
+    ],
+    'concatMap': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 1 }, { time: 20, value: 2 },
+                { time: 50, value: 4 }, { time: 90, value: 6 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [{ time: 0, value: 'a' }, { time: 10, value: 'b' },
+                { time: 20, value: 'c' }, { time: 30, isLimit: true }]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.concatMap((item) => {\n          return input2.map((item2) => item.value + item2.value);\n        });\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.concatMap(function (item) {
+                    return input2.map(function (item2) {
+                        return item.value + item2.value;
+                    });
+                });
+            }
+        }
+    ],
+    'concatMapTo': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 1 }, { time: 20, value: 2 },
+                { time: 50, value: 4 }, { time: 90, value: 6 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [{ time: 0, value: 'a' }, { time: 20, value: 'b' }, { time: 30, isLimit: true }]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.concatMapTo(input2)\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.concatMapTo(input2);
+            }
+        }
+    ],
+    'exhaustMap': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 1 }, { time: 20, value: 2 },
+                { time: 50, value: 4 }, { time: 90, value: 6 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [{ time: 0, value: 'a' }, { time: 20, value: 'b' }, { time: 30, isLimit: true }]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.exhaustMap((item1) =>\n          input2.map((item2) => item1.value + item2.value))\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.exhaustMap(function (item1) { return input2.map(function (item2) { return item1.value + item2.value; }); });
             }
         }
     ]
