@@ -93,7 +93,6 @@ export class TimelineEmiter {
 
   set color (color: string) {
     this._color = color || 'white';
-    console.log(this._color);
     this.circle.fill(this._color);
   }
 
