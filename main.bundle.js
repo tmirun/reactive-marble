@@ -1072,6 +1072,24 @@ var operators = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_add_operator_mergeMapTo__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/mergeMapTo.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_add_operator_mergeScan__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/mergeScan.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_rxjs_add_operator_pairwise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/pairwise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_rxjs_add_operator_pluck__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/pluck.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_rxjs_add_operator_scan__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/scan.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_rxjs_add_operator_switchMap__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/switchMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_rxjs_add_operator_switchMapTo__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/switchMapTo.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_rxjs_add_operator_window__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/window.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_rxjs_add_operator_windowCount__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/windowCount.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_rxjs_add_operator_windowTime__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/windowTime.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_rxjs_add_operator_windowToggle__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/windowToggle.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_rxjs_add_operator_windowWhen__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/windowWhen.js");
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1308,7 +1326,7 @@ var list = {
         },
         {
             type: 'label',
-            payload: "\n        TODO: NEES SUPORT MULTIPLE OUTPUT\n      "
+            payload: "\n        TODO: NEED SUPORT MULTIPLE OUTPUT\n      "
         },
         {
             type: 'result',
@@ -1492,7 +1510,251 @@ var list = {
         },
         {
             type: 'label',
-            payload: "\n        TODO: NEES SUPORT MULTIPLE OUTPUT\n      "
+            payload: "\n        TODO: NEED SUPORT MULTIPLE OUTPUT\n      "
+        }
+    ],
+    'pluck': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 30, value: 3 },
+                { time: 40, value: 4 },
+                { time: 50, value: 5 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.pluck('value'); // item = {time: 0, value: 0}\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.pluck('value');
+            }
+        }
+    ],
+    'scan': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 20, value: 1 },
+                { time: 40, value: 2 },
+                { time: 60, value: 3 },
+                { time: 80, value: 4 },
+                { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.pluck('value')\n          .scan((accumulatedValue, value) => accumulatedValue + value, 0);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.pluck('value')
+                    .scan(function (accumulatedValue, value) { return accumulatedValue + value; }, 0);
+            }
+        }
+    ],
+    'switchMap': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 30, value: 1 },
+                { time: 40, value: 2 },
+                { time: 60, value: 3 },
+                { time: 90, value: 4 },
+                { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 0, value: 'a' }, { time: 10, value: 'b' },
+                { time: 20, isLimit: true }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.switchMap((item1) => {\n            return input2.map((item2) => item1.value + item2.value);\n          });\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.switchMap(function (item1) {
+                    return input2.map(function (item2) { return item1.value + item2.value; });
+                });
+            }
+        }
+    ],
+    'switchMapTo': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 30, value: 1 },
+                { time: 40, value: 2 },
+                { time: 60, value: 3 },
+                { time: 90, value: 4 },
+                { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 0, value: 'a' }, { time: 10, value: 'b' },
+                { time: 20, isLimit: true }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.switchMap(input2)\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.switchMapTo(input2);
+            }
+        }
+    ],
+    'window': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 30, value: 1 },
+                { time: 40, value: 2 },
+                { time: 60, value: 3 },
+                { time: 90, value: 4 },
+                { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 0, value: 'a' }, { time: 50, value: 'b' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO: NEED SUPORT MULTIPLE OUTPUT\n      "
+        }
+    ],
+    'windowCount': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 30, value: 1 },
+                { time: 40, value: 2 },
+                { time: 60, value: 3 },
+                { time: 90, value: 4 },
+                { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 0, value: 'a' }, { time: 50, value: 'b' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO: NEED SUPORT MULTIPLE OUTPUT\n      "
+        }
+    ],
+    'windowTime': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 30, value: 1 },
+                { time: 40, value: 2 },
+                { time: 60, value: 3 },
+                { time: 90, value: 4 },
+                { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 0, value: 'a' }, { time: 50, value: 'b' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO: NEED SUPORT MULTIPLE OUTPUT\n      "
+        }
+    ],
+    'windowToggle': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 30, value: 1 },
+                { time: 40, value: 2 },
+                { time: 60, value: 3 },
+                { time: 90, value: 4 },
+                { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 0, value: 'a' }, { time: 50, value: 'b' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO: NEED SUPORT MULTIPLE OUTPUT\n      "
+        }
+    ],
+    'windowWhen': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 30, value: 1 },
+                { time: 40, value: 2 },
+                { time: 60, value: 3 },
+                { time: 90, value: 4 },
+                { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 0, value: 'a' }, { time: 50, value: 'b' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO: NEED SUPORT MULTIPLE OUTPUT\n      "
         }
     ]
 };
