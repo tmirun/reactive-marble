@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 declare const SVG: any;
 
 export class Timeline {
-  public svgSize = { width: 400, height: 80 };
+  public svgSize = { width: 600, height: 80 };
   public margin = 20;
   public padding = 20;
   public center:      Point = new Point(this.svgSize.width / 2, this.svgSize.height / 2);
