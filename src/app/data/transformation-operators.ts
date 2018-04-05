@@ -16,6 +16,15 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/mergeMapTo';
 import 'rxjs/add/operator/mergeScan';
 import 'rxjs/add/operator/pairwise';
+import 'rxjs/add/operator/pluck';
+import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/switchMapTo';
+import 'rxjs/add/operator/window';
+import 'rxjs/add/operator/windowCount';
+import 'rxjs/add/operator/windowTime';
+import 'rxjs/add/operator/windowToggle';
+import 'rxjs/add/operator/windowWhen';
 
 const list = {
 
@@ -258,7 +267,7 @@ const list = {
     {
       type: 'label',
       payload: `
-        TODO: NEES SUPORT MULTIPLE OUTPUT
+        TODO: NEED SUPORT MULTIPLE OUTPUT
       `
     },
     {
@@ -462,7 +471,271 @@ const list = {
     {
       type: 'label',
       payload: `
-        TODO: NEES SUPORT MULTIPLE OUTPUT
+        TODO: NEED SUPORT MULTIPLE OUTPUT
+      `
+    }
+  ],
+
+  'pluck': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 0 },
+        {time: 10, value: 1 },
+        {time: 20, value: 2 },
+        {time: 30, value: 3 },
+        {time: 40, value: 4 },
+        {time: 50, value: 5 }
+      ]
+    },
+    {
+      type: 'label',
+      payload: `
+        input1.pluck('value'); // item = {time: 0, value: 0}
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload (input1) {
+        return input1.pluck('value');
+      }
+    }
+  ],
+
+  'scan': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 0 },
+        {time: 20, value: 1 },
+        {time: 40, value: 2 },
+        {time: 60, value: 3 },
+        {time: 80, value: 4 },
+        {time: 100, value: 5 }
+      ]
+    },
+    {
+      type: 'label',
+      payload: `
+        input1.pluck('value')
+          .scan((accumulatedValue, value) => accumulatedValue + value, 0);
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload (input1) {
+        return input1.pluck('value')
+          .scan((accumulatedValue, value) => accumulatedValue + value, 0);
+      }
+    }
+  ],
+
+  'switchMap': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 0 },
+        {time: 30, value: 1 },
+        {time: 40, value: 2 },
+        {time: 60, value: 3 },
+        {time: 90, value: 4 },
+        {time: 100, value: 5 }
+      ]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [
+        {time: 0, value: 'a' }, {time: 10, value: 'b' },
+        {time: 20, isLimit: true }]
+    },
+    {
+      type: 'label',
+      payload: `
+        input1.switchMap((item1) => {
+            return input2.map((item2) => item1.value + item2.value);
+          });
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload (input1, input2) {
+        return input1.switchMap((item1) => {
+          return input2.map((item2) => item1.value + item2.value);
+        });
+      }
+    }
+  ],
+
+  'switchMapTo': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 0 },
+        {time: 30, value: 1 },
+        {time: 40, value: 2 },
+        {time: 60, value: 3 },
+        {time: 90, value: 4 },
+        {time: 100, value: 5 }
+      ]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [
+        {time: 0, value: 'a' }, {time: 10, value: 'b' },
+        {time: 20, isLimit: true }]
+    },
+    {
+      type: 'label',
+      payload: `
+        input1.switchMap(input2)
+      `
+    },
+    {
+      type: 'result',
+      name: 'result1',
+      payload (input1, input2) {
+        return input1.switchMapTo(input2);
+      }
+    }
+  ],
+
+  'window': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 0 },
+        {time: 30, value: 1 },
+        {time: 40, value: 2 },
+        {time: 60, value: 3 },
+        {time: 90, value: 4 },
+        {time: 100, value: 5 }
+      ]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [
+        {time: 0, value: 'a' }, {time: 50, value: 'b' }]
+    },
+    {
+      type: 'label',
+      payload: `
+        TODO: NEED SUPORT MULTIPLE OUTPUT
+      `
+    }
+  ],
+
+  'windowCount': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 0 },
+        {time: 30, value: 1 },
+        {time: 40, value: 2 },
+        {time: 60, value: 3 },
+        {time: 90, value: 4 },
+        {time: 100, value: 5 }
+      ]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [
+        {time: 0, value: 'a' }, {time: 50, value: 'b' }]
+    },
+    {
+      type: 'label',
+      payload: `
+        TODO: NEED SUPORT MULTIPLE OUTPUT
+      `
+    }
+  ],
+  'windowTime': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 0 },
+        {time: 30, value: 1 },
+        {time: 40, value: 2 },
+        {time: 60, value: 3 },
+        {time: 90, value: 4 },
+        {time: 100, value: 5 }
+      ]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [
+        {time: 0, value: 'a' }, {time: 50, value: 'b' }]
+    },
+    {
+      type: 'label',
+      payload: `
+        TODO: NEED SUPORT MULTIPLE OUTPUT
+      `
+    }
+  ],
+  'windowToggle': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 0 },
+        {time: 30, value: 1 },
+        {time: 40, value: 2 },
+        {time: 60, value: 3 },
+        {time: 90, value: 4 },
+        {time: 100, value: 5 }
+      ]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [
+        {time: 0, value: 'a' }, {time: 50, value: 'b' }]
+    },
+    {
+      type: 'label',
+      payload: `
+        TODO: NEED SUPORT MULTIPLE OUTPUT
+      `
+    }
+  ],
+  'windowWhen': [
+    {
+      type: 'input',
+      name: 'input1',
+      payload: [
+        {time: 0, value: 0 },
+        {time: 30, value: 1 },
+        {time: 40, value: 2 },
+        {time: 60, value: 3 },
+        {time: 90, value: 4 },
+        {time: 100, value: 5 }
+      ]
+    },
+    {
+      type: 'input',
+      name: 'input2',
+      payload: [
+        {time: 0, value: 'a' }, {time: 50, value: 'b' }]
+    },
+    {
+      type: 'label',
+      payload: `
+        TODO: NEED SUPORT MULTIPLE OUTPUT
       `
     }
   ]
