@@ -9,7 +9,7 @@ import transformationOperators from './transformation-operators';
 
 const operators = {
   'creators': {...creators},
-  'Transformation': {...transformationOperators},
+  'transformation': {...transformationOperators},
   'combiners': {...combiners},
 };
 
