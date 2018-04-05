@@ -202,7 +202,7 @@ var AppModule = /** @class */ (function () {
 /***/ "../../../../../src/app/components/sidebar/sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul nz-menu nzMode=\"inline\" style=\"width: 240px;\" fxFlexFill=\"\">\n  <li nz-submenu nzOpen *ngFor=\"let listKey of objectKeys(list)\">\n    <span title> {{listKey}} </span>\n    <ul>\n      <li nz-menu-item *ngFor=\"let itemKey of objectKeys(list[listKey])\">\n        <a [routerLink]=\"['/', listKey, itemKey]\">\n          {{itemKey}}\n        </a>\n      </li>\n    </ul>\n  </li>\n</ul>\n"
+module.exports = "<ul nz-menu nzMode=\"inline\" style=\"width: 240px;\" fxFlexFill class=\"rm-sidebar\">\n  <li nz-submenu nzOpen *ngFor=\"let listKey of objectKeys(list)\">\n    <span title> {{listKey}} </span>\n    <ul>\n      <li nz-menu-item *ngFor=\"let itemKey of objectKeys(list[listKey])\">\n        <a [routerLink]=\"['/', listKey, itemKey]\">\n          {{itemKey}}\n        </a>\n      </li>\n    </ul>\n  </li>\n</ul>\n"
 
 /***/ }),
 
@@ -214,7 +214,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ":host .rm-sidebar {\n  overflow-x: scroll; }\n", ""]);
 
 // exports
 
@@ -317,7 +317,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host .rm-marble {\n  display: inline; }\n\n:host /deep/ .rm-marble-label {\n  white-space: pre-wrap;\n  width: 400px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  padding: 16px; }\n", ""]);
+exports.push([module.i, ":host .rm-marble {\n  display: inline; }\n\n:host /deep/ .rm-marble-label {\n  white-space: pre-wrap;\n  width: 600px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  padding: 16px; }\n", ""]);
 
 // exports
 
@@ -411,7 +411,6 @@ var MarbleComponent = /** @class */ (function () {
                     });
                     if (resultInputs$_1.length) {
                         __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["a" /* Observable */].combineLatest.apply(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["a" /* Observable */], resultInputs$_1).map(function (itemsDatas) {
-                            console.log(itemsDatas);
                             var resultItems = [];
                             var inputsDelay$ = [];
                             var scheduler = new __WEBPACK_IMPORTED_MODULE_19_rxjs_scheduler_VirtualTimeScheduler__["a" /* VirtualTimeScheduler */](undefined, 100);
@@ -447,7 +446,6 @@ var MarbleComponent = /** @class */ (function () {
                         var resultItems_1 = [];
                         marbleItem.payload(scheduler_1)
                             .subscribe(function (item) {
-                            console.log(item);
                             var newItemData = typeof item === 'object' ? new __WEBPACK_IMPORTED_MODULE_17__models_TimelineEmiter__["b" /* TimelineItemData */](scheduler_1.now(), { value: item.value, color: item.color }) :
                                 new __WEBPACK_IMPORTED_MODULE_17__models_TimelineEmiter__["b" /* TimelineItemData */](scheduler_1.now(), { value: item });
                             resultItems_1.push(newItemData);
@@ -584,7 +582,7 @@ var Timeline = /** @class */ (function () {
     function Timeline(id, input, draggable) {
         if (draggable === void 0) { draggable = true; }
         var _this = this;
-        this.svgSize = { width: 400, height: 80 };
+        this.svgSize = { width: 600, height: 80 };
         this.margin = 20;
         this.padding = 20;
         this.center = new __WEBPACK_IMPORTED_MODULE_0__Point__["a" /* Point */](this.svgSize.width / 2, this.svgSize.height / 2);
@@ -781,7 +779,6 @@ var TimelineEmiter = /** @class */ (function () {
     Object.defineProperty(TimelineEmiter.prototype, "color", {
         set: function (color) {
             this._color = color || 'white';
-            console.log(this._color);
             this.circle.fill(this._color);
         },
         enumerable: true,
@@ -1046,7 +1043,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 * */
 var operators = {
     'creators': __assign({}, __WEBPACK_IMPORTED_MODULE_0__creators__["a" /* default */]),
-    'Transformation': __assign({}, __WEBPACK_IMPORTED_MODULE_2__transformation_operators__["a" /* default */]),
+    'transformation': __assign({}, __WEBPACK_IMPORTED_MODULE_2__transformation_operators__["a" /* default */]),
     'combiners': __assign({}, __WEBPACK_IMPORTED_MODULE_1__combiners__["a" /* default */]),
 };
 
@@ -1068,6 +1065,20 @@ var operators = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_concatMap__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/concatMap.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_concatMapTo__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/concatMapTo.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_exhaustMap__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/exhaustMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_groupBy__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/groupBy.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_add_operator_mapTo__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/mapTo.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_add_operator_mergeMap__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/mergeMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_add_operator_mergeMapTo__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/mergeMapTo.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_add_operator_mergeScan__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/mergeScan.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_rxjs_add_operator_pairwise__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/pairwise.js");
+
+
+
+
+
+
+
 
 
 
@@ -1280,6 +1291,208 @@ var list = {
             payload: function (input1, input2) {
                 return input1.exhaustMap(function (item1) { return input2.map(function (item2) { return item1.value + item2.value; }); });
             }
+        }
+    ],
+    'groupBy': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 }, { time: 10, value: 1 },
+                { time: 20, value: 2 }, { time: 30, value: 3 },
+                { time: 40, value: 4 }, { time: 50, value: 5 },
+                { time: 60, value: 6 }, { time: 70, value: 7 },
+                { time: 80, value: 8 }, { time: 90, value: 9 },
+                { time: 100, value: 10 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO: NEES SUPORT MULTIPLE OUTPUT\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1;
+            }
+        }
+    ],
+    'map': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 }, { time: 20, value: 1 },
+                { time: 40, value: 2 }, { time: 60, value: 3 },
+                { time: 80, value: 4 }, { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.map( item =>  item.value * 10);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.map(function (item) { return item.value * 10; });
+            }
+        }
+    ],
+    'mapTo': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 }, { time: 20, value: 1 },
+                { time: 40, value: 2 }, { time: 60, value: 3 },
+                { time: 80, value: 4 }, { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.mapTo('a');\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.mapTo('a');
+            }
+        }
+    ],
+    'mergeMap': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 }, { time: 20, value: 1 },
+                { time: 40, value: 3 }, { time: 60, value: 4 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 0, value: 'a' }, { time: 10, value: 'b' },
+                { time: 20, isLimit: true }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.mergeMap((item1) => {\n          return input2.map(item2 => item1.value * item2.value);\n        });\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.mergeMap(function (item1) {
+                    return input2.map(function (item2) { return item1.value + item2.value; });
+                });
+            }
+        }
+    ],
+    'mergeMapTo': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 }, { time: 20, value: 1 },
+                { time: 60, value: 3 }, { time: 80, value: 4 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 0, value: 'a' }, { time: 10, value: 'b' },
+                { time: 20, isLimit: true }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.mergeMapTo(input2)\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.mergeMapTo(input2);
+            }
+        }
+    ],
+    'mergeScan': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 20, value: 2 },
+                { time: 40, value: 4 },
+                { time: 60, value: 6 },
+                { time: 80, value: 8 },
+                { time: 100, value: 10 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        const seed = 1;\n        input1.map((item) => item.value)\n          .mergeScan((accumulatedValue, value) => {\n            return Observable.of(accumulatedValue + value);\n          }, seed);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                var seed = 1;
+                return input1.map(function (item) { return item.value; }).mergeScan(function (accumulatedValue, value) {
+                    return __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__["a" /* Observable */].of(accumulatedValue + value);
+                }, seed);
+            }
+        }
+    ],
+    'pairwise': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 60, value: 'd' },
+                { time: 80, value: 'e' },
+                { time: 100, value: 'f' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.pairwise().map(items => {\n          return items[0].value + ',' + items[1].value;\n        });\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.pairwise().map(function (items) {
+                    return items[0].value + ',' + items[1].value;
+                });
+            }
+        }
+    ],
+    'partition': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 20, value: 1 },
+                { time: 40, value: 2 },
+                { time: 60, value: 3 },
+                { time: 80, value: 4 },
+                { time: 100, value: 5 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO: NEES SUPORT MULTIPLE OUTPUT\n      "
         }
     ]
 };
