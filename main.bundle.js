@@ -149,17 +149,19 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_flex_layout__ = __webpack_require__("../../../flex-layout/esm5/flex-layout.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_core_module__ = __webpack_require__("../../../../../src/app/core/core.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_main_main_component__ = __webpack_require__("../../../../../src/app/pages/main/main.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_sidebar_sidebar_component__ = __webpack_require__("../../../../../src/app/components/sidebar/sidebar.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ng_zorro_antd__ = __webpack_require__("../../../../ng-zorro-antd/esm5/antd.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__core_core_module__ = __webpack_require__("../../../../../src/app/core/core.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_main_main_component__ = __webpack_require__("../../../../../src/app/pages/main/main.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_sidebar_sidebar_component__ = __webpack_require__("../../../../../src/app/components/sidebar/sidebar.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ng_zorro_antd__ = __webpack_require__("../../../../ng-zorro-antd/esm5/antd.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -176,20 +178,21 @@ var AppModule = /** @class */ (function () {
     AppModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["J" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */],
-                __WEBPACK_IMPORTED_MODULE_7__pages_main_main_component__["a" /* MainComponent */],
-                __WEBPACK_IMPORTED_MODULE_8__components_sidebar_sidebar_component__["a" /* SidebarComponent */],
+                __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */],
+                __WEBPACK_IMPORTED_MODULE_8__pages_main_main_component__["a" /* MainComponent */],
+                __WEBPACK_IMPORTED_MODULE_9__components_sidebar_sidebar_component__["a" /* SidebarComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_4__app_routing_module__["a" /* AppRoutingModule */],
-                __WEBPACK_IMPORTED_MODULE_6__core_core_module__["a" /* CoreModule */],
-                __WEBPACK_IMPORTED_MODULE_9_ng_zorro_antd__["a" /* NgZorroAntdModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_2__angular_flex_layout__["a" /* FlexLayoutModule */]
+                __WEBPACK_IMPORTED_MODULE_7__core_core_module__["a" /* CoreModule */],
+                __WEBPACK_IMPORTED_MODULE_10_ng_zorro_antd__["a" /* NgZorroAntdModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_2__angular_flex_layout__["a" /* FlexLayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_5__angular_forms__["a" /* FormsModule */]
             ],
             providers: [],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */]]
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
     return AppModule;
@@ -202,7 +205,7 @@ var AppModule = /** @class */ (function () {
 /***/ "../../../../../src/app/components/sidebar/sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul nz-menu nzMode=\"inline\" style=\"width: 240px;\" fxFlexFill class=\"rm-sidebar\">\n  <li nz-submenu nzOpen *ngFor=\"let listKey of objectKeys(list)\">\n    <span title> {{listKey}} </span>\n    <ul>\n      <li nz-menu-item *ngFor=\"let itemKey of objectKeys(list[listKey])\">\n        <a [routerLink]=\"['/', listKey, itemKey]\">\n          {{itemKey}}\n        </a>\n      </li>\n    </ul>\n  </li>\n</ul>\n"
+module.exports = "<ul nz-menu nzMode=\"inline\" nzTheme=\"dark\" style=\"width: 240px;\" fxFlexFill class=\"rm-sidebar\">\n  <li nz-submenu [nzOpen]= \"currentCategory === listKey\" *ngFor=\"let listKey of objectKeys(list)\">\n    <span class=\"rm-sidebar-item-title\" title> {{listKey}} </span>\n    <ul>\n      <li class=\"rm-sidebar-item\" nz-menu-item [nzSelected]=\"currentOperator === itemKey\" *ngFor=\"let itemKey of objectKeys(list[listKey])\">\n        <a [routerLink]=\"['/', listKey, itemKey]\">\n          {{itemKey}}\n        </a>\n      </li>\n    </ul>\n  </li>\n  <br/>\n</ul>\n"
 
 /***/ }),
 
@@ -214,7 +217,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host .rm-sidebar {\n  overflow-x: scroll; }\n", ""]);
+exports.push([module.i, ":host .rm-sidebar {\n  overflow-x: scroll; }\n  :host .rm-sidebar .rm-sidebar-item-title {\n    text-transform: uppercase; }\n  :host .rm-sidebar .rm-sidebar-item > a::first-letter {\n    text-transform: uppercase; }\n", ""]);
 
 // exports
 
@@ -231,6 +234,7 @@ module.exports = module.exports.toString();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SidebarComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data__ = __webpack_require__("../../../../../src/app/data/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -242,12 +246,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var SidebarComponent = /** @class */ (function () {
-    function SidebarComponent() {
+    function SidebarComponent(route) {
+        this.route = route;
         this.objectKeys = Object.keys;
         this.list = __WEBPACK_IMPORTED_MODULE_1__data__["a" /* operators */];
+        this.currentCategory = '';
+        this.currentOperator = '';
     }
     SidebarComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            _this.currentCategory = params.category;
+            _this.currentOperator = params.operator;
+            //   // this.param = params['yourParam'];
+            //   // this.initialiseState(); // reset and set based on new parameter this time
+        });
     };
     SidebarComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -255,7 +270,7 @@ var SidebarComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/app/components/sidebar/sidebar.component.html"),
             styles: [__webpack_require__("../../../../../src/app/components/sidebar/sidebar.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */]])
     ], SidebarComponent);
     return SidebarComponent;
 }());
@@ -317,7 +332,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host .rm-marble {\n  display: inline; }\n\n:host /deep/ .rm-marble-label {\n  white-space: pre-wrap;\n  width: 600px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  padding: 16px; }\n", ""]);
+exports.push([module.i, ":host .rm-marble {\n  display: inline; }\n\n:host /deep/ .rm-marble-label {\n  white-space: pre-wrap;\n  width: 600px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);\n  -webkit-transition: 0.3s;\n  transition: 0.3s;\n  padding: 16px;\n  font-family: 'Source Sans Pro', sans-serif;\n  font-weight: bold;\n  font-size: 16px; }\n", ""]);
 
 // exports
 
@@ -1018,6 +1033,709 @@ var list = {
 
 /***/ }),
 
+/***/ "../../../../../src/app/data/filtering-operators.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_audit__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/audit.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_auditTime__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/auditTime.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_debounce__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/debounce.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_debounceTime__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/debounceTime.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_distinct__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/distinct.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_distinctUntilChanged__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/distinctUntilChanged.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_elementAt__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/elementAt.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_filter__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/filter.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_first__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/first.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_ignoreElements__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/ignoreElements.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_last__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/last.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_sample__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/sample.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_add_operator_sampleTime__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/sampleTime.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_rxjs_add_operator_single__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/single.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_rxjs_add_operator_skip__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/skip.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_rxjs_add_operator_skipLast__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/skipLast.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_rxjs_add_operator_skipUntil__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/skipUntil.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_rxjs_add_operator_skipWhile__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/skipWhile.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_rxjs_add_operator_take__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/take.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_rxjs_add_operator_takeLast__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/takeLast.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_rxjs_add_operator_takeWhile__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/takeWhile.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_rxjs_add_operator_takeUntil__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/takeUntil.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_rxjs_add_operator_throttle__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/throttle.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_rxjs_add_operator_throttleTime__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/throttleTime.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "Creating Observables"
+var list = {
+    'audit': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 40, value: 3 },
+                { time: 50, value: 4 },
+                { time: 70, value: 5 },
+                { time: 80, value: 6 },
+                { time: 90, value: 7 },
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [{ time: 10, isLimit: true }]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.audit(() => input2);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.audit(function () { return input2; });
+            }
+        }
+    ],
+    'auditTime': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 40, value: 3 },
+                { time: 50, value: 4 },
+                { time: 70, value: 5 },
+                { time: 80, value: 6 },
+                { time: 90, value: 7 },
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.auditTime(10);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, scheduler) {
+                return input1.auditTime(10, scheduler);
+            }
+        }
+    ],
+    'debounce': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 40, value: 3 },
+                { time: 50, value: 4 },
+                { time: 70, value: 5 },
+                { time: 80, value: 6 },
+                { time: 90, value: 7 },
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [{ time: 10, isLimit: true }]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.debounce(() => input2);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.debounce(function () { return input2; });
+            }
+        }
+    ],
+    'debounceTime': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 40, value: 3 },
+                { time: 50, value: 4 },
+                { time: 70, value: 5 },
+                { time: 80, value: 6 },
+                { time: 90, value: 7 },
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.debounceTime(10, scheduler)\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, scheduler) {
+                return input1.debounceTime(10, scheduler);
+            }
+        }
+    ],
+    'distinct': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 10, value: 1 },
+                { time: 20, value: 1 },
+                { time: 30, value: 1 },
+                { time: 40, value: 2 },
+                { time: 50, value: 3 },
+                { time: 70, value: 3 },
+                { time: 80, value: 4 },
+                { time: 90, value: 5 },
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.distinct((item) => item.value);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.distinct(function (item) { return item.value; });
+            }
+        }
+    ],
+    'distinctUntilChanged': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 1 },
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 30, value: 1 },
+                { time: 40, value: 2 },
+                { time: 50, value: 3 },
+                { time: 70, value: 3 },
+                { time: 80, value: 4 },
+                { time: 90, value: 3 },
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.distinctUntilChanged(\n          (itemOld, item) => itemOld.value === item.value\n        )\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.distinctUntilChanged(function (itemPrevious, item) { return itemPrevious.value === item.value; });
+            }
+        }
+    ],
+    ' elementAt': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 70, value: 'd' },
+                { time: 90, value: 'e' },
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.elementAt(2);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.elementAt(2);
+            }
+        }
+    ],
+    'filter': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 30, value: 3 },
+                { time: 40, value: 4 },
+                { time: 50, value: 5 },
+                { time: 60, value: 6 },
+                { time: 70, value: 7 },
+                { time: 80, value: 8 },
+                { time: 90, value: 9 },
+                { time: 10, value: 10 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.filter(item => item.value % 2 === 1);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.filter(function (item) { return item.value % 2 === 1; });
+            }
+        }
+    ],
+    'first': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 70, value: 'd' },
+                { time: 90, value: 'e' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.first();\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.first();
+            }
+        }
+    ],
+    'ignoreElements': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 70, value: 'd' },
+                { time: 90, value: 'e' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.ignoreElements();\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.ignoreElements();
+            }
+        }
+    ],
+    'last': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 70, value: 'd' },
+                { time: 90, value: 'e' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.last();\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.last();
+            }
+        }
+    ],
+    'sample': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 50, value: 'd' },
+                { time: 80, value: 'e' }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 15, value: 'x' },
+                { time: 30, value: 'x' },
+                { time: 60, value: 'x' },
+                { time: 70, value: 'x' },
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.last();\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.sample(input2);
+            }
+        }
+    ],
+    'sampleTime': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 50, value: 'd' },
+                { time: 80, value: 'e' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.sampleTime(30);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, scheduler) {
+                return input1.sampleTime(30, scheduler);
+            }
+        }
+    ],
+    'single': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 50, value: 'd' },
+                { time: 80, value: 'e' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO ERROR HANDLER\n      "
+        },
+    ],
+    'skip': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 50, value: 'd' },
+                { time: 80, value: 'e' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.skip(3);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.skip(3);
+            }
+        }
+    ],
+    'skipLast': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 50, value: 'd' },
+                { time: 80, value: 'e' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        // TODO ADD INSTANT OPERATIONS\n      "
+        }
+    ],
+    'skipUntil': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 50, value: 'd' },
+                { time: 80, value: 'e' }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 45, value: 'x' },
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.skipUntil(input2);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.skipUntil(input2);
+            }
+        }
+    ],
+    'skipWhile': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 40, value: 3 },
+                { time: 40, value: 4 },
+                { time: 50, value: 2 },
+                { time: 80, value: 5 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.skipWhile(item => item.value < 3);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.skipWhile(function (item) { return item.value < 3; });
+            }
+        }
+    ],
+    'take': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 50, value: 'd' },
+                { time: 80, value: 'e' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.take(2);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.take(2);
+            }
+        }
+    ],
+    'takeLast': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 50, value: 'd' },
+                { time: 80, value: 'e' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        // TODO ADD INSTANT OPERATIONS\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.takeLast(4);
+            }
+        }
+    ],
+    'takeUntil': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 'a' },
+                { time: 20, value: 'b' },
+                { time: 40, value: 'c' },
+                { time: 50, value: 'd' },
+                { time: 80, value: 'e' }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 45, value: 'x' },
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.takeUntil(input2);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.takeUntil(input2);
+            }
+        }
+    ],
+    'takeWhile': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 40, value: 3 },
+                { time: 40, value: 4 },
+                { time: 50, value: 2 },
+                { time: 80, value: 5 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.takeWhile(item => item.value < 3);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.takeWhile(function (item) { return item.value < 3; });
+            }
+        }
+    ],
+    'throttle': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 15, value: 1 },
+                { time: 20, value: 2 },
+                { time: 35, value: 3 },
+                { time: 40, value: 4 },
+                { time: 50, value: 5 },
+                { time: 60, value: 6 },
+                { time: 75, value: 7 },
+                { time: 80, value: 8 },
+                { time: 95, value: 9 },
+                { time: 100, value: 10 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 20, isLimit: true },
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.throttle(input2);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.throttle(function () { return input2; });
+            }
+        }
+    ],
+    'throttleTime': [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 0, value: 0 },
+                { time: 15, value: 1 },
+                { time: 20, value: 2 },
+                { time: 35, value: 3 },
+                { time: 40, value: 4 },
+                { time: 50, value: 5 },
+                { time: 60, value: 6 },
+                { time: 75, value: 7 },
+                { time: 80, value: 8 },
+                { time: 95, value: 9 },
+                { time: 100, value: 10 }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.throttleTime(20);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1) {
+                return input1.throttleTime(20);
+            }
+        }
+    ],
+};
+/* harmony default export */ __webpack_exports__["a"] = (list);
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/data/index.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1026,6 +1744,7 @@ var list = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__creators__ = __webpack_require__("../../../../../src/app/data/creators.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combiners__ = __webpack_require__("../../../../../src/app/data/combiners.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__transformation_operators__ = __webpack_require__("../../../../../src/app/data/transformation-operators.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__filtering_operators__ = __webpack_require__("../../../../../src/app/data/filtering-operators.ts");
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -1037,6 +1756,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 
 
 
+
 /*
 * index: http://reactivex.io/documentation/operators.html
 * https://github.com/ReactiveX/rxjs/blob/master/doc/operators.md
@@ -1044,6 +1764,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 var operators = {
     'creators': __assign({}, __WEBPACK_IMPORTED_MODULE_0__creators__["a" /* default */]),
     'transformation': __assign({}, __WEBPACK_IMPORTED_MODULE_2__transformation_operators__["a" /* default */]),
+    'filtering': __assign({}, __WEBPACK_IMPORTED_MODULE_3__filtering_operators__["a" /* default */]),
     'combiners': __assign({}, __WEBPACK_IMPORTED_MODULE_1__combiners__["a" /* default */]),
 };
 
@@ -2030,6 +2751,8 @@ var map = {
 	"./mk.js": "../../../../moment/locale/mk.js",
 	"./ml": "../../../../moment/locale/ml.js",
 	"./ml.js": "../../../../moment/locale/ml.js",
+	"./mn": "../../../../moment/locale/mn.js",
+	"./mn.js": "../../../../moment/locale/mn.js",
 	"./mr": "../../../../moment/locale/mr.js",
 	"./mr.js": "../../../../moment/locale/mr.js",
 	"./ms": "../../../../moment/locale/ms.js",
