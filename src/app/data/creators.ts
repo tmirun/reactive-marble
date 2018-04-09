@@ -31,6 +31,7 @@ const list = {
       }
     }
   ],
+
   'defer': [
     {
       type: 'label',
@@ -50,6 +51,7 @@ const list = {
       }
     }
   ],
+
   'empty': [
     {
       type: 'label',
@@ -65,6 +67,7 @@ const list = {
       }
     }
   ],
+
   'from': [
     {
       type: 'label',
@@ -81,6 +84,7 @@ const list = {
       }
     }
   ],
+
   'interval': [
     {
       type: 'label',
@@ -94,6 +98,7 @@ const list = {
       }
     }
   ],
+
   'range': [
     {
       type: 'label',
