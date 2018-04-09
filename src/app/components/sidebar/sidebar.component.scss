@@ -1,5 +1,11 @@
 :host {
   .rm-sidebar {
     overflow-x: scroll;
+    .rm-sidebar-item-title {
+      text-transform:uppercase;
+    }
+    .rm-sidebar-item > a::first-letter {
+      text-transform:uppercase;
+    }
   }
 }

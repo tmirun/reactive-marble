@@ -1,12 +1,13 @@
-<ul nz-menu nzMode="inline" style="width: 240px;" fxFlexFill class="rm-sidebar">
-  <li nz-submenu nzOpen *ngFor="let listKey of objectKeys(list)">
-    <span title> {{listKey}} </span>
+<ul nz-menu nzMode="inline" nzTheme="dark" style="width: 240px;" fxFlexFill class="rm-sidebar">
+  <li nz-submenu [nzOpen]= "currentCategory === listKey" *ngFor="let listKey of objectKeys(list)">
+    <span class="rm-sidebar-item-title" title> {{listKey}} </span>
     <ul>
-      <li nz-menu-item *ngFor="let itemKey of objectKeys(list[listKey])">
+      <li class="rm-sidebar-item" nz-menu-item [nzSelected]="currentOperator === itemKey" *ngFor="let itemKey of objectKeys(list[listKey])">
         <a [routerLink]="['/', listKey, itemKey]">
           {{itemKey}}
         </a>
       </li>
     </ul>
   </li>
+  <br/>
 </ul>
