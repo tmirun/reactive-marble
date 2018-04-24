@@ -205,7 +205,7 @@ var AppModule = /** @class */ (function () {
 /***/ "../../../../../src/app/components/sidebar/sidebar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul nz-menu nzMode=\"inline\" nzTheme=\"dark\" style=\"width: 240px;\" fxFlexFill class=\"rm-sidebar\">\n  <li nz-submenu [nzOpen]= \"currentCategory === listKey\" *ngFor=\"let listKey of objectKeys(list)\">\n    <span class=\"rm-sidebar-item-title\" title> {{listKey}} </span>\n    <ul>\n      <li class=\"rm-sidebar-item\" nz-menu-item [nzSelected]=\"currentOperator === itemKey\" *ngFor=\"let itemKey of objectKeys(list[listKey])\">\n        <a [routerLink]=\"['/', listKey, itemKey]\">\n          {{itemKey}}\n        </a>\n      </li>\n    </ul>\n  </li>\n  <br/>\n</ul>\n"
+module.exports = "<div fxFlexFill fxLayout=\"column\" class=\"rm-sidebar\">\n  <div fxFlex=\"none\" fxLayout=\"row\" fxLayoutAlign=\"center center\" class=\"rm-sidebar-search\">\n    <i fxFlex=\"none\" class=\"anticon anticon-search\"></i>\n    <nz-select\n      fxFlex\n      style=\"width: 200px;\"\n      nzAllowClear\n      [nzPlaceHolder]=\"'Select a person'\"\n      [ngModel]=\"searchOptions\"\n      nzShowSearch>\n      <nz-option\n        *ngFor=\"let option of searchOptions\"\n        [nzLabel]=\"option.label\"\n        [nzValue]=\"option.value\"\n        [nzDisabled]=\"option.disabled\">\n      </nz-option>\n    </nz-select>\n  </div>\n\n  <ul fxFlex nz-menu nzMode=\"inline\" nzTheme=\"dark\" style=\"width: 100%\">\n    <li nz-submenu [nzOpen]= \"currentCategory === listKey\" *ngFor=\"let listKey of objectKeys(list)\">\n      <span class=\"rm-sidebar-item-title\" title> {{listKey}} </span>\n      <ul>\n        <li class=\"rm-sidebar-item\" nz-menu-item [nzSelected]=\"currentOperator === itemKey\" *ngFor=\"let itemKey of objectKeys(list[listKey])\">\n          <a [routerLink]=\"['/', listKey, itemKey]\">\n            {{itemKey}}\n          </a>\n        </li>\n      </ul>\n    </li>\n    <br/>\n  </ul>\n</div>\n"
 
 /***/ }),
 
@@ -217,7 +217,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ":host .rm-sidebar {\n  overflow-x: scroll; }\n  :host .rm-sidebar .rm-sidebar-item-title {\n    text-transform: uppercase; }\n  :host .rm-sidebar .rm-sidebar-item > a::first-letter {\n    text-transform: uppercase; }\n", ""]);
+exports.push([module.i, ":host .rm-sidebar {\n  overflow-x: scroll;\n  background: #404040; }\n  :host .rm-sidebar .rm-sidebar-item-title {\n    text-transform: uppercase; }\n  :host .rm-sidebar .rm-sidebar-item > a::first-letter {\n    text-transform: uppercase; }\n  :host .rm-sidebar .rm-sidebar-search {\n    padding: 8px; }\n  :host .rm-sidebar .rm-sidebar-search i {\n      color: white;\n      font-size: 16px;\n      padding-right: 8px; }\n", ""]);
 
 // exports
 
@@ -254,15 +254,29 @@ var SidebarComponent = /** @class */ (function () {
         this.list = __WEBPACK_IMPORTED_MODULE_1__data__["a" /* operators */];
         this.currentCategory = '';
         this.currentOperator = '';
+        this.searchOptions = [];
     }
     SidebarComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.route.params.subscribe(function (params) {
             _this.currentCategory = params.category;
             _this.currentOperator = params.operator;
-            //   // this.param = params['yourParam'];
-            //   // this.initialiseState(); // reset and set based on new parameter this time
         });
+        Object.keys(__WEBPACK_IMPORTED_MODULE_1__data__["a" /* operators */]).forEach(function (categoryKey) {
+            Object.keys(__WEBPACK_IMPORTED_MODULE_1__data__["a" /* operators */][categoryKey]).forEach(function (operator) {
+                _this.searchOptions.push({
+                    label: _this.capitalizeFirstLetter(categoryKey) + ": " + _this.capitalizeFirstLetter(operator),
+                    value: {
+                        category: categoryKey,
+                        operator: operator
+                    }
+                });
+            });
+        });
+    };
+    SidebarComponent.prototype.capitalizeFirstLetter = function (string) {
+        if (string === void 0) { string = ''; }
+        return string.charAt(0).toUpperCase() + string.slice(1);
     };
     SidebarComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -868,9 +882,183 @@ var TimelineLimitLine = /** @class */ (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core_models_TimelineEmiter__ = __webpack_require__("../../../../../src/app/core/models/TimelineEmiter.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__("../../../../rxjs/_esm5/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_combineAll__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/combineAll.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_combineLatest__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/combineLatest.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_concatAll__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/concatAll.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_concat__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/concat.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_exhaust__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/exhaust.js");
+
+
+
+
+
+
 
 
 var list = {
+    combineAll: [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 30, isLimit: true }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 15, value: 'a' },
+                { time: 35, value: 'b' },
+                { time: 40, isLimit: true }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        TODO\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1;
+                // return input1.map(() => input2)
+                //   .combineAll().map(function (x) {
+                //     return 1;
+                //   });
+            }
+        }
+    ],
+    combineLatest: [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 1 }, { time: 20, value: 2 },
+                { time: 50, value: 3 }, { time: 90, value: 6 }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 30, value: 'a' }, { time: 50, value: 'b' },
+                { time: 60, value: 'c' }, { time: 70, value: 'd' }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.combineLatest(input2)\n          .map(([item1, item2]) => item1.value + item2.value);\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.combineLatest(input2).map(function (_a) {
+                    var item1 = _a[0], item2 = _a[1];
+                    return item1.value + item2.value;
+                });
+            }
+        }
+    ],
+    concat: [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 30, isLimit: true }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 15, value: 'a' },
+                { time: 35, value: 'b' },
+                { time: 40, isLimit: true }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.concat(input2)\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.concat(input2).map(function (item) {
+                    return item;
+                });
+            }
+        }
+    ],
+    concatAll: [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 30, isLimit: true }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 15, value: 'a' },
+                { time: 35, value: 'b' },
+                { time: 40, isLimit: true }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.map(() => input2).concatAll()\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.map(function () { return input2; }).concatAll();
+            }
+        }
+    ],
+    exhaust: [
+        {
+            type: 'input',
+            name: 'input1',
+            payload: [
+                { time: 10, value: 1 },
+                { time: 20, value: 2 },
+                { time: 30, isLimit: true }
+            ]
+        },
+        {
+            type: 'input',
+            name: 'input2',
+            payload: [
+                { time: 15, value: 'a' },
+                { time: 35, value: 'b' },
+                { time: 40, isLimit: true }
+            ]
+        },
+        {
+            type: 'label',
+            payload: "\n        input1.map(() => input2).concatAll()\n      "
+        },
+        {
+            type: 'result',
+            name: 'result1',
+            payload: function (input1, input2) {
+                return input1.map(function () { return input2; }).exhaust();
+            }
+        }
+    ],
     zip: [
         {
             type: 'input',
