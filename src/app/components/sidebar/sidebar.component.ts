@@ -14,6 +14,7 @@ export class SidebarComponent implements OnInit {
   public list = operators;
   public currentCategory = '';
   public currentOperator = '';
+  public searchOptions = [];
 
   constructor(private route: ActivatedRoute) {
 
@@ -23,9 +24,23 @@ export class SidebarComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.currentCategory = params.category;
       this.currentOperator = params.operator;
-      //   // this.param = params['yourParam'];
-      //   // this.initialiseState(); // reset and set based on new parameter this time
     });
+
+    Object.keys(operators).forEach((categoryKey) => {
+      Object.keys(operators[categoryKey]).forEach((operator) => {
+        this.searchOptions.push({
+          label: `${this.capitalizeFirstLetter(categoryKey)}: ${this.capitalizeFirstLetter(operator)}`,
+          value: {
+            category: categoryKey,
+            operator: operator
+          }
+        });
+      });
+    });
+  }
+
+  capitalizeFirstLetter(string = '') {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
 }

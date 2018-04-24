@@ -1,11 +1,23 @@
 :host {
   .rm-sidebar {
     overflow-x: scroll;
+    background: #404040;
+
     .rm-sidebar-item-title {
       text-transform:uppercase;
     }
+
     .rm-sidebar-item > a::first-letter {
       text-transform:uppercase;
+    }
+
+    .rm-sidebar-search{
+      i {
+        color: white;
+        font-size: 16px;
+        padding-right: 8px;
+      }
+      padding: 8px;
     }
   }
 }

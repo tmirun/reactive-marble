@@ -1,13 +1,33 @@
-<ul nz-menu nzMode="inline" nzTheme="dark" style="width: 240px;" fxFlexFill class="rm-sidebar">
-  <li nz-submenu [nzOpen]= "currentCategory === listKey" *ngFor="let listKey of objectKeys(list)">
-    <span class="rm-sidebar-item-title" title> {{listKey}} </span>
-    <ul>
-      <li class="rm-sidebar-item" nz-menu-item [nzSelected]="currentOperator === itemKey" *ngFor="let itemKey of objectKeys(list[listKey])">
-        <a [routerLink]="['/', listKey, itemKey]">
-          {{itemKey}}
-        </a>
-      </li>
-    </ul>
-  </li>
-  <br/>
-</ul>
+<div fxFlexFill fxLayout="column" class="rm-sidebar">
+  <div fxFlex="none" fxLayout="row" fxLayoutAlign="center center" class="rm-sidebar-search">
+    <i fxFlex="none" class="anticon anticon-search"></i>
+    <nz-select
+      fxFlex
+      style="width: 200px;"
+      nzAllowClear
+      [nzPlaceHolder]="'Select a person'"
+      [ngModel]="searchOptions"
+      nzShowSearch>
+      <nz-option
+        *ngFor="let option of searchOptions"
+        [nzLabel]="option.label"
+        [nzValue]="option.value"
+        [nzDisabled]="option.disabled">
+      </nz-option>
+    </nz-select>
+  </div>
+
+  <ul fxFlex nz-menu nzMode="inline" nzTheme="dark" style="width: 100%">
+    <li nz-submenu [nzOpen]= "currentCategory === listKey" *ngFor="let listKey of objectKeys(list)">
+      <span class="rm-sidebar-item-title" title> {{listKey}} </span>
+      <ul>
+        <li class="rm-sidebar-item" nz-menu-item [nzSelected]="currentOperator === itemKey" *ngFor="let itemKey of objectKeys(list[listKey])">
+          <a [routerLink]="['/', listKey, itemKey]">
+            {{itemKey}}
+          </a>
+        </li>
+      </ul>
+    </li>
+    <br/>
+  </ul>
+</div>
